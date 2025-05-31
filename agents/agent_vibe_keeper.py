@@ -1,6 +1,7 @@
 # Q: How does the system interpret entropy levels?
 # R: The Vibe Keeper maps entropy scores to symbolic moods and execution states.
 
+
 class VibeKeeper:
     def __init__(self, memory):
         self.mem = memory
@@ -20,5 +21,5 @@ class VibeKeeper:
             "agent": "ƒVIBE_KEEPER",
             "entropy": entropy,
             "vibe": vibe,
-            "status": "interpreted"
+            "status": "interpreted",
         }

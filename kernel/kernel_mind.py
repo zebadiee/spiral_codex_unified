@@ -1,6 +1,7 @@
 from kernel.kernel_mem import KernelMEM
 from kernel.reward_tracker import RewardTracker
 
+
 class KernelMIND:
     def __init__(self):
         self.mem = KernelMEM()
@@ -16,7 +17,7 @@ class KernelMIND:
                 "agent": agent,
                 "status": "not_found",
                 "query": glyph,
-                "message": "No symbolic memory found for the given glyph."
+                "message": "No symbolic memory found for the given glyph.",
             }
 
         result = self.agents[agent].run(glyph, inject or {})

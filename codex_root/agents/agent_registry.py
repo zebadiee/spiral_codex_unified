@@ -1,6 +1,7 @@
 from codex_root.kernel.kernel_mem import KernelMEM
 from codex_root.kernel.kernel_mind import KernelMIND
 
+
 class AgentRegistry:
     def __init__(self):
         self.mem = KernelMEM()

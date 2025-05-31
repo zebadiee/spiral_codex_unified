@@ -4,6 +4,7 @@
 from typing import Callable, Dict, Optional
 import unicodedata
 
+
 class KernelSYM:
     def __init__(self):
         self.glyph_registry: Dict[str, Callable] = {}

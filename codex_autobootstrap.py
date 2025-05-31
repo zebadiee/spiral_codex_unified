@@ -14,12 +14,14 @@ STRUCTURE = {
     "tui": ["touchboard"],
     "utils": ["visualizer", "glyph_loader", "ritual_runner"],
     "examples": [".ritual", ".json"],
-    "core_scripts": ["runner"]
+    "core_scripts": ["runner"],
 }
+
 
 def ensure_dirs(base):
     for folder in STRUCTURE:
         os.makedirs(os.path.join(base, folder), exist_ok=True)
+
 
 def classify_file(name):
     for folder, patterns in STRUCTURE.items():
@@ -28,6 +30,7 @@ def classify_file(name):
                 return folder
     return "core_scripts"
 
+
 def autobootstrap():
     zip_path = Path(SOURCE_ZIP)
     if not zip_path.exists():
@@ -35,7 +38,7 @@ def autobootstrap():
         return
 
     print(f"🧠 Unpacking {SOURCE_ZIP}...")
-    with zipfile.ZipFile(zip_path, 'r') as zipf:
+    with zipfile.ZipFile(zip_path, "r") as zipf:
         zipf.extractall("codex_unsorted")
 
     print(f"📂 Organizing into {OUTPUT_DIR}/...")
@@ -50,7 +53,9 @@ def autobootstrap():
             target_path = Path(OUTPUT_DIR) / dest_folder / file.name
             shutil.move(str(file), str(target_path))
             codex_index[file.name] = str(target_path)
-            trace_log.append(f"[{datetime.utcnow().isoformat()}Z] MOVED: {file.name} → {dest_folder}/")
+            trace_log.append(
+                f"[{datetime.utcnow().isoformat()}Z] MOVED: {file.name} → {dest_folder}/"
+            )
 
     with open(Path(OUTPUT_DIR) / "codex_index.json", "w") as f:
         json.dump(codex_index, f, indent=2)
@@ -60,6 +65,7 @@ def autobootstrap():
 
     shutil.rmtree("codex_unsorted")
     print("✅ Bootstrap complete. Indexed + organized.")
+
 
 if __name__ == "__main__":
     autobootstrap()

@@ -4,6 +4,7 @@
 from typing import List
 from datetime import datetime
 
+
 class KernelTRACE:
     def __init__(self):
         self.buffer: List[str] = []
@@ -15,4 +16,4 @@ class KernelTRACE:
         return self.buffer
 
     def _now(self) -> str:
-        return datetime.utcnow().isoformat(timespec='seconds') + "Z"
+        return datetime.utcnow().isoformat(timespec="seconds") + "Z"

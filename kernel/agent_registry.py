@@ -6,10 +6,15 @@ kernel_dir = Path(__file__).resolve().parent
 sys.path.insert(0, str(kernel_dir))
 
 # Kernel and agent imports (from same directory)
+# kernel/agent_registry.py
+
 from kernel.kernel_mem import KernelMEM
 from kernel_mind import KernelMIND
 from agent_archivist import ArchivistAgent
 from agent_vibe_keeper import VibeKeeperAgent
+
+# Your existing AgentRegistry class or logic follows here
+
 
 class AgentRegistry:
     def __init__(self):
@@ -25,4 +30,3 @@ class AgentRegistry:
         if agent:
             return agent.process(glyph)
         return {"error": f"Agent '{agent_name}' not found"}
-

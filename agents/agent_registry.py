@@ -4,6 +4,7 @@
 from agents.agent_archivist import ArchivistAgent
 from agents.agent_vibe_keeper import VibeKeeper
 
+
 class AgentRegistry:
     def __init__(self, mem):
         self.mem = mem

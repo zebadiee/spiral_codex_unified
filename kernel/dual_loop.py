@@ -1,6 +1,5 @@
-from kernel.kernel_sym import KernelSYM
-from kernel.kernel_mem import KernelMEM
 from kernel.reward_tracker import RewardTracker
+
 
 class ProposalPolicy:
     def __init__(self, kernel_sym):
@@ -12,8 +11,12 @@ class ProposalPolicy:
     def generate_batch(self):
         return ["τ1", "τ2"]
 
-    def update(self, scaffold, reward): pass
-    def adjust(self, scaffold, reward): pass
+    def update(self, scaffold, reward):
+        pass
+
+    def adjust(self, scaffold, reward):
+        pass
+
 
 class ExecutionPolicy:
     def __init__(self, kernel_mem):
@@ -23,9 +26,15 @@ class ExecutionPolicy:
         ritual = self.kernel_mem.query(f"ritual_for({x})") or {"ritual": f"auto({x})"}
         return ritual
 
-    def update(self, result, reward): pass
-    def adjust(self, result, reward): pass
-    def load_scaffold(self, τ): pass
+    def update(self, result, reward):
+        pass
+
+    def adjust(self, result, reward):
+        pass
+
+    def load_scaffold(self, τ):
+        pass
+
 
 class DualLoopLearner:
     def __init__(self, kernel_sym, kernel_mem):
@@ -55,4 +64,3 @@ class DualLoopLearner:
                 r = env.evaluate(y)
                 self.π_propose.adjust(τ, r)
                 self.π_solve.adjust(y, r)
-

@@ -1,0 +1,3 @@
+[tool.ruff.lint.per-file-ignores]
+"agent_registry.py" = ["E402"]
+"kernel/agent_registry.py" = ["E402"]

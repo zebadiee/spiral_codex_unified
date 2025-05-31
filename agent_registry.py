@@ -11,6 +11,7 @@ from kernel_mind import KernelMIND
 from agent_archivist import ArchivistAgent
 from agent_vibe_keeper import VibeKeeperAgent
 
+
 class AgentRegistry:
     def __init__(self):
         self.kernel_mem = KernelMEM()
@@ -25,4 +26,3 @@ class AgentRegistry:
         if agent:
             return agent.process(glyph)
         return {"error": f"Agent '{agent_name}' not found"}
-
