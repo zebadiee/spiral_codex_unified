@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.python-version
+*.egg-info/
+dist/
+build/
+.env
+.venv/
+venv/
+
+# Logs
+*.log
+*.logs
+
+# IDEs
+.vscode/
+.idea/
+
+# System
+.DS_Store
+*.swp
+*.swo
+
+# Project-specific
+/rituals/reconstructions/*.log
+/autosync/*.tmp
