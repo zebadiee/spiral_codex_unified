@@ -1,35 +1,63 @@
+nano tests/test_core.py        # Paste test
+nano mypy.ini                  # Paste mypy config
+nano .github/CODEOWNERS        # Optional
+echo -e "coverage_report/\ncoverage.svg" >> .gitignore
+
+git add .
+git commit -m "🚦 Full CI/CD with lint, type checks, tests, coverage"
+git push origin main
 name: CI
+
 on: [push, pull_request]
+
 jobs:
   lint:
     name: Lint and Format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python 3.8
+
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.8"
-      - name: Install dependencies
-        run: pip install black ruff
-      - name: Run Black
+          python-version: "3.10"
+
+      - name: Install linters
+        run: pip install black ruff mypy
+
+      - name: Black check
         run: black . --check
-      - name: Run Ruff
-        uses: astral-sh/ruff-action@v3
-        with:
-          args: "check --fix"
+
+      - name: Ruff check
+        run: ruff check . --fix
+
+      - name: Mypy (type check)
+        run: mypy ./
 
   test:
-    name: Run Tests
+    name: Test with Coverage
     needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python 3.8
+
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.8"
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Run Pytest
-        run: pytest tests/
+          python-version: "3.10"
+
+      - name: Install test dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov coverage-badge-py
+
+      - name: Run Pytest + Coverage
+        run: |
+          pytest --cov=./ --cov-report=xml
+          coverage-badge -o coverage.svg
+
+      - name: Upload Coverage XML
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage.xml

@@ -25,3 +25,5 @@ venv/
 # Project-specific
 /rituals/reconstructions/*.log
 /autosync/*.tmp
+coverage_report/
+coverage.svg
