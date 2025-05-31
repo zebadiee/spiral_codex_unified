@@ -1,0 +1,28 @@
+[
+  {
+    "timestamp": "2025-05-15T20:53:37Z",
+    "agent": "\u0192ARCHIVIST",
+    "glyph": "\u0192DUMMY",
+    "action": "not_found",
+    "reward": -0.5,
+    "metadata": {
+      "agent": "\u0192ARCHIVIST",
+      "status": "not_found",
+      "query": "\u0192DUMMY",
+      "message": "No symbolic memory found for the given glyph."
+    }
+  },
+  {
+    "timestamp": "2025-05-15T20:54:21Z",
+    "agent": "\u0192ARCHIVIST",
+    "glyph": "\u0192DUMMY",
+    "action": "not_found",
+    "reward": -0.5,
+    "metadata": {
+      "agent": "\u0192ARCHIVIST",
+      "status": "not_found",
+      "query": "\u0192DUMMY",
+      "message": "No symbolic memory found for the given glyph."
+    }
+  }
+]
