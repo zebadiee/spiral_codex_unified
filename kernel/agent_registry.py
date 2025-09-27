@@ -10,8 +10,8 @@ sys.path.insert(0, str(kernel_dir))
 
 from kernel.kernel_mem import KernelMEM
 from kernel_mind import KernelMIND
-from agent_archivist import ArchivistAgent
-from agent_vibe_keeper import VibeKeeperAgent
+from agents.agent_archivist import ArchivistAgent
+from agents.agent_vibe_keeper import VibeKeeper
 
 # Your existing AgentRegistry class or logic follows here
 
