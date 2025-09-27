@@ -1,3 +1,37 @@
-fastapi
-uvicorn
-pydantic
+# 🌀 Spiral Codex Organic OS - Core Dependencies
+# =================================================
+# Production dependencies for the organic operating system
+
+# === Web Framework & API ===
+fastapi>=0.104.1
+uvicorn[standard]>=0.24.0
+
+# === Configuration & Validation ===
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+python-dotenv>=1.0.0
+
+# === Data Processing ===
+python-multipart>=0.0.6  # For file uploads
+email-validator>=2.1.0   # For email validation in pydantic
+
+# === HTTP Client ===
+httpx>=0.25.2
+requests>=2.31.0
+
+# === Date & Time ===
+python-dateutil>=2.8.2
+
+# === Utilities ===
+typing-extensions>=4.8.0  # For older Python versions compatibility
+
+# === Optional Database Support ===
+# Uncomment as needed for your deployment
+# sqlalchemy>=2.0.23
+# asyncpg>=0.29.0          # PostgreSQL async
+# psycopg2-binary>=2.9.7   # PostgreSQL sync
+# redis>=5.0.1             # Redis support
+
+# === Optional Monitoring ===
+# prometheus-client>=0.19.0  # Metrics
+# sentry-sdk>=1.38.0         # Error tracking
