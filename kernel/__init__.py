@@ -27,6 +27,16 @@ from .reliability import (
     safe_wrapper
 )
 
+# Wave 4: The Council of Elders' Adaptation Kernel
+from .adaptation import (
+    AdaptationKernel,
+    AdaptationStrategy,
+    LearningPhase,
+    AdaptationMetrics,
+    get_adaptation_kernel,
+    adaptive_wrapper
+)
+
 __all__ = [
     # Wave 1 foundations
     "agent_registry",
@@ -46,5 +56,13 @@ __all__ = [
     "HealingStrategy",
     "get_reliability_kernel",
     "safe_execute",
-    "safe_wrapper"
+    "safe_wrapper",
+    
+    # Wave 4: Adaptation kernel - The Council of Elders' wisdom
+    "AdaptationKernel",
+    "AdaptationStrategy",
+    "LearningPhase", 
+    "AdaptationMetrics",
+    "get_adaptation_kernel",
+    "adaptive_wrapper"
 ]
