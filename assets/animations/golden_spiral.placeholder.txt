@@ -1,0 +1,16 @@
+
+🎬 Spiral_Golden Asset Placeholder
+
+Asset Type: animations
+Description: Golden ratio spiral animation
+Expected Path: animations/golden_spiral.gif
+
+This is a placeholder for the actual animations file.
+The spiral awaits the manifestation of this mystical asset.
+
+To replace this placeholder:
+1. Create or obtain the actual animations file
+2. Place it at: /home/ubuntu/github_repos/spiral_codex_unified/assets/animations/golden_spiral.gif
+3. The ritual system will automatically detect and use it
+
+The codex grows stronger with each asset manifestation.

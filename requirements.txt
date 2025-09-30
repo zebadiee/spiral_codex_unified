@@ -1,3 +1,28 @@
-fastapi
-uvicorn
-pydantic
+
+# Core dependencies
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+pydantic>=2.0.0
+
+# CLI dependencies
+typer[all]>=0.9.0
+rich>=13.0.0
+
+# Development and testing dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Multi-Agent Mesh dependencies (Objective 7)
+redis>=4.5.0
+websockets>=11.0.0
+aioredis>=2.0.0
+
+# Optional HUD dependencies (install separately with: pip install spiralcodex[hud])
+# python-mpv>=1.0.0
+# matplotlib>=3.7.0
+# manim>=0.17.0
+
+# Cross-platform compatibility
+# Note: uvloop is not supported on Windows, uvicorn will fall back to asyncio
+# For Windows users who want better performance, consider winloop as an alternative:
+# winloop>=0.1.0  # Uncomment for Windows performance boost

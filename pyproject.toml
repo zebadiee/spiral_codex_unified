@@ -1,3 +1,73 @@
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spiralcodex"
+version = "0.1.0"
+description = "🌀 Spiral Codex Unified - Recursive Agent Framework"
+authors = [{name = "Spiral Codex Collective", email = "spiral@codex.dev"}]
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.20.0",
+    "pydantic>=2.0.0",
+    "typer[all]>=0.9.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+hud = [
+    "python-mpv>=1.0.0",
+    "matplotlib>=3.7.0",
+    "manim>=0.17.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+]
+
+[project.scripts]
+codex = "spiralcodex.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/zebadiee/spiral_codex_unified"
+Repository = "https://github.com/zebadiee/spiral_codex_unified"
+Issues = "https://github.com/zebadiee/spiral_codex_unified/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
 [tool.ruff.lint.per-file-ignores]
 "agent_registry.py" = ["E402"]
 "kernel/agent_registry.py" = ["E402"]
+"src/spiralcodex/cli.py" = ["E402"]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
