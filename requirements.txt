@@ -1,3 +1,12 @@
-fastapi
-uvicorn
-pydantic
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+pydantic>=2.0.0
+
+# Development and testing dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Cross-platform compatibility
+# Note: uvloop is not supported on Windows, uvicorn will fall back to asyncio
+# For Windows users who want better performance, consider winloop as an alternative:
+# winloop>=0.1.0  # Uncomment for Windows performance boost
