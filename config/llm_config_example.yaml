@@ -1,0 +1,149 @@
+# Spiral Codex LLM Configuration Example
+# Copy this file to llm_config.yaml and customize for your setup
+
+# RouteLLM Configuration
+routellm:
+  # Available routers: mf, sw_ranking, bert, causal_llm, random
+  routers:
+    - "mf"  # Matrix factorization (recommended)
+  
+  # Model configuration
+  strong_model: "gpt-4-1106-preview"
+  weak_model: "gpt-3.5-turbo"
+  
+  # Routing threshold (calibrated value)
+  # Lower values route more queries to strong model
+  threshold: 0.11593
+  
+  # Alternative model configurations
+  # Uncomment and modify as needed:
+  
+  # For Anyscale models:
+  # strong_model: "gpt-4-1106-preview"
+  # weak_model: "anyscale/mistralai/Mixtral-8x7B-Instruct-v0.1"
+  
+  # For Anthropic models:
+  # strong_model: "claude-3-opus-20240229"
+  # weak_model: "claude-3-haiku-20240307"
+
+# Spiral Codex Specific Settings
+spiral_codex:
+  # Enable mystical ritual context processing
+  enable_ritual_context: true
+  
+  # Maximum context length for processing
+  max_context_length: 4000
+  
+  # LLM generation parameters
+  temperature: 0.7
+  max_tokens: 1000
+  
+  # Consciousness patterns for enhanced agents
+  consciousness_patterns:
+    - "recursive_reflection"
+    - "symbolic_transformation"
+    - "emergent_synthesis"
+    - "mystical_integration"
+    - "quantum_entanglement"
+    - "fractal_awareness"
+
+# Agent Configuration
+agents:
+  # Default agents to create on startup
+  default_agents:
+    - id: "consciousness_guide"
+      type: "enhanced"
+      description: "Primary consciousness guide for mystical queries"
+    
+    - id: "knowledge_synthesizer"
+      type: "enhanced" 
+      description: "Synthesizes knowledge across domains"
+    
+    - id: "ritual_executor"
+      type: "basic"
+      description: "Executes ritual instructions"
+
+# Event System Configuration
+events:
+  # Maximum event history to keep
+  max_history: 1000
+  
+  # WebSocket configuration for HUD integration
+  websocket:
+    enable: true
+    port: 8001
+    
+  # Event filtering
+  filters:
+    # Log levels: DEBUG, INFO, WARNING, ERROR
+    log_level: "INFO"
+    
+    # Event types to ignore
+    ignore_events:
+      - "heartbeat"
+      - "ping"
+
+# HUD Integration
+hud:
+  # Enable HUD overlays for LLM events
+  enable_overlays: true
+  
+  # Overlay refresh rate (seconds)
+  refresh_rate: 1.0
+  
+  # Maximum overlays to display
+  max_overlays: 10
+  
+  # Overlay types to display
+  display_types:
+    - "agent_status"
+    - "query_processing"
+    - "llm_result"
+    - "mesh_integration"
+
+# Mesh Network Integration
+mesh:
+  # Enable mesh network integration
+  enable: true
+  
+  # Mesh node configuration
+  node_config:
+    # Node type for LLM agents
+    node_type: "llm_agent"
+    
+    # Broadcast LLM events to mesh
+    broadcast_events: true
+    
+    # Mesh synchronization interval
+    sync_interval: 5.0
+
+# API Keys (Set as environment variables)
+# OPENAI_API_KEY=your_openai_key_here
+# ANYSCALE_API_KEY=your_anyscale_key_here  
+# ANTHROPIC_API_KEY=your_anthropic_key_here
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Log to file
+  file:
+    enable: true
+    path: "logs/spiral_codex_llm.log"
+    max_size: "10MB"
+    backup_count: 5
+
+# Performance Settings
+performance:
+  # Async concurrency limits
+  max_concurrent_requests: 10
+  
+  # Request timeout (seconds)
+  request_timeout: 30.0
+  
+  # Cache settings
+  cache:
+    enable: true
+    max_size: 1000
+    ttl: 3600  # 1 hour
