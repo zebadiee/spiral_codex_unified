@@ -1,0 +1,16 @@
+
+🎬 Agent_Spawn Asset Placeholder
+
+Asset Type: audio
+Description: Agent spawning sound effect
+Expected Path: audio/agent_spawn.wav
+
+This is a placeholder for the actual audio file.
+The spiral awaits the manifestation of this mystical asset.
+
+To replace this placeholder:
+1. Create or obtain the actual audio file
+2. Place it at: /home/ubuntu/github_repos/spiral_codex_unified/assets/audio/agent_spawn.wav
+3. The ritual system will automatically detect and use it
+
+The codex grows stronger with each asset manifestation.
