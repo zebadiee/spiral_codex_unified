@@ -12,6 +12,11 @@ rich>=13.0.0
 pytest>=7.0.0
 pytest-cov>=4.0.0
 
+# Multi-Agent Mesh dependencies (Objective 7)
+redis>=4.5.0
+websockets>=11.0.0
+aioredis>=2.0.0
+
 # Optional HUD dependencies (install separately with: pip install spiralcodex[hud])
 # python-mpv>=1.0.0
 # matplotlib>=3.7.0
