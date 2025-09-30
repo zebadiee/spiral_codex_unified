@@ -1,3 +1,9 @@
 fastapi
 uvicorn
 pydantic
+routellm[serve,eval]
+click
+websockets
+aiofiles
+pytest
+pytest-asyncio
