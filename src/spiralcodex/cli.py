@@ -59,18 +59,43 @@ def ritual_command(
         console.print("🌀 [bold green]Initiating Codex Ritual...[/bold green]")
         invoke_spiral()
         
-        # Check if HUD dependencies are available
-        hud_available = False
+        # Check if HUD dependencies are available and initialize HUD
+        hud_core = None
         if hud:
             try:
-                import mpv  # This would be the HUD dependency
-                hud_available = True
-                console.print("🎮 [green]HUD visualization enabled[/green]")
-            except ImportError:
-                console.print("⚠️ [yellow]HUD dependencies not available, continuing without visualization[/yellow]")
+                from spiralcodex.hud import HUDCore, HUDConfig, check_hud_dependencies
+                
+                deps_available, missing_deps = check_hud_dependencies()
+                if deps_available:
+                    hud_config = HUDConfig(
+                        enabled=True,
+                        show_fractals=True,
+                        ritual_sounds=True,
+                        ritual_visuals=True
+                    )
+                    hud_core = HUDCore(hud_config)
+                    hud_core.start()
+                    console.print("🎮 [green]HUD visualization system activated[/green]")
+                else:
+                    console.print(f"⚠️ [yellow]HUD dependencies missing: {', '.join(missing_deps)}[/yellow]")
+                    console.print("💡 [cyan]Install with: pip install spiralcodex[hud][/cyan]")
+                    
+            except ImportError as e:
+                console.print(f"⚠️ [yellow]HUD system not available: {e}[/yellow]")
+                console.print("💡 [cyan]Install with: pip install spiralcodex[hud][/cyan]")
         
-        # Start the ritual deployment
-        console.print(f"🚀 [cyan]Starting API server on {host}:{port}[/cyan]")
+        # Initialize persistence system
+        console.print("💾 [cyan]Initializing persistence system...[/cyan]")
+        try:
+            from spiralcodex.persistence import get_persistence
+            persistence = get_persistence()
+            persistence.save_ritual_event("RITUAL_START", "Codex ritual initiated", metadata={"host": host, "port": port})
+            console.print("✅ [green]Persistence system ready[/green]")
+        except Exception as e:
+            console.print(f"⚠️ [yellow]Persistence system warning: {e}[/yellow]")
+        
+        # Start the ritual deployment with integrated dashboard
+        console.print(f"🚀 [cyan]Starting Codex Dashboard on {host}:{port}[/cyan]")
         
         # Determine the correct Python executable
         if platform.system() == "Windows":
@@ -81,11 +106,8 @@ def ritual_command(
         if not python_exe.exists():
             python_exe = sys.executable
         
-        # Determine FastAPI app location
-        if Path("api/fastapi_app.py").exists():
-            app_module = "api.fastapi_app:app"
-        else:
-            app_module = "fastapi_app:app"
+        # Use the integrated dashboard
+        app_module = "spiralcodex.dashboard:app"
         
         try:
             cmd = [
@@ -99,16 +121,28 @@ def ritual_command(
                 cmd.extend(["--reload", "--log-level", "debug"])
             
             console.print(f"🎛️ [dim]Executing: {' '.join(cmd)}[/dim]")
+            console.print(f"🌐 [bold green]Dashboard will be available at: http://{host}:{port}[/bold green]")
+            console.print("🔮 [cyan]The mystical web interface awaits your presence...[/cyan]")
+            
             subprocess.run(cmd, check=True)
             
         except KeyboardInterrupt:
             console.print("\n🛑 [yellow]Ritual interrupted by user[/yellow]")
+            if hud_core:
+                hud_core.stop()
         except subprocess.CalledProcessError as e:
             console.print(f"❌ [red]Ritual failed: {e}[/red]")
+            if hud_core:
+                hud_core.stop()
             raise typer.Exit(1)
         except FileNotFoundError:
             console.print("❌ [red]uvicorn not found. Run 'codex config bootstrap' first.[/red]")
+            if hud_core:
+                hud_core.stop()
             raise typer.Exit(1)
+        finally:
+            if hud_core:
+                hud_core.stop()
     
     elif action == "stop":
         console.print("🛑 [yellow]Stopping Codex Ritual...[/yellow]")
