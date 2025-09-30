@@ -1,0 +1,41 @@
+{
+  "videos": {
+    "spiral_intro": {
+      "path": "videos/spiral_intro.mp4",
+      "description": "Mystical spiral introduction video",
+      "duration": 30.0,
+      "resolution": "1920x1080",
+      "type": "intro"
+    }
+  },
+  "animations": {
+    "fractal_mandelbrot": {
+      "path": "animations/mandelbrot_zoom.gif",
+      "description": "Mandelbrot set zoom animation",
+      "frames": 120,
+      "type": "fractal"
+    },
+    "spiral_golden": {
+      "path": "animations/golden_spiral.gif",
+      "description": "Golden ratio spiral animation",
+      "frames": 60,
+      "type": "spiral"
+    }
+  },
+  "audio": {
+    "ritual_initialization": {
+      "path": "audio/initialization.wav",
+      "description": "Ritual initialization sound",
+      "duration": 5.0,
+      "frequency": 432
+    },
+    "agent_spawn": {
+      "path": "audio/agent_spawn.wav",
+      "description": "Agent spawning sound effect",
+      "duration": 2.0,
+      "frequency": 528
+    }
+  },
+  "fractals": {},
+  "spirals": {}
+}

@@ -1,0 +1,16 @@
+
+🎬 Spiral_Intro Asset Placeholder
+
+Asset Type: videos
+Description: Mystical spiral introduction video
+Expected Path: videos/spiral_intro.mp4
+
+This is a placeholder for the actual videos file.
+The spiral awaits the manifestation of this mystical asset.
+
+To replace this placeholder:
+1. Create or obtain the actual videos file
+2. Place it at: /home/ubuntu/github_repos/spiral_codex_unified/assets/videos/spiral_intro.mp4
+3. The ritual system will automatically detect and use it
+
+The codex grows stronger with each asset manifestation.
