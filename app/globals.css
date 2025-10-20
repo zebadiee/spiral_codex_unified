@@ -1,0 +1,173 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    --radius: 0.5rem;
+    
+    --neon-blue: 217 91% 60%;
+    --neon-purple: 271 91% 65%;
+    --neon-cyan: 189 94% 43%;
+    --neon-pink: 330 81% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* Neon glow effects */
+  .neon-glow-blue {
+    box-shadow: 0 0 10px hsl(var(--neon-blue) / 0.5),
+                0 0 20px hsl(var(--neon-blue) / 0.3),
+                0 0 30px hsl(var(--neon-blue) / 0.1);
+  }
+  
+  .neon-glow-purple {
+    box-shadow: 0 0 10px hsl(var(--neon-purple) / 0.5),
+                0 0 20px hsl(var(--neon-purple) / 0.3),
+                0 0 30px hsl(var(--neon-purple) / 0.1);
+  }
+  
+  .neon-text-blue {
+    color: hsl(var(--neon-blue));
+    text-shadow: 0 0 10px hsl(var(--neon-blue) / 0.8),
+                 0 0 20px hsl(var(--neon-blue) / 0.5);
+  }
+  
+  .neon-text-purple {
+    color: hsl(var(--neon-purple));
+    text-shadow: 0 0 10px hsl(var(--neon-purple) / 0.8),
+                 0 0 20px hsl(var(--neon-purple) / 0.5);
+  }
+  
+  /* Gradient backgrounds */
+  .gradient-bg {
+    background: linear-gradient(135deg, 
+      hsl(var(--neon-blue) / 0.05) 0%, 
+      hsl(var(--neon-purple) / 0.05) 100%);
+  }
+  
+  .gradient-border {
+    border-image: linear-gradient(135deg, 
+      hsl(var(--neon-blue)), 
+      hsl(var(--neon-purple))) 1;
+  }
+  
+  /* Scrollbar styling */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--neon-blue) / 0.3);
+    border-radius: 4px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--neon-blue) / 0.5);
+  }
+  
+  /* Animated grid background */
+  .grid-background {
+    background-image: 
+      linear-gradient(hsl(var(--neon-blue) / 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--neon-blue) / 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: grid-move 20s linear infinite;
+  }
+  
+  @keyframes grid-move {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 50px 50px;
+    }
+  }
+  
+  /* Pulse animation */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 10px hsl(var(--neon-blue) / 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px hsl(var(--neon-blue) / 0.8),
+                  0 0 30px hsl(var(--neon-blue) / 0.5);
+    }
+  }
+  
+  /* Glass morphism */
+  .glass {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(var(--border));
+  }
+  
+  /* Hover effects */
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px hsl(var(--neon-blue) / 0.3);
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

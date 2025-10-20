@@ -1,0 +1,95 @@
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Idea {
+  id          String   @id @default(uuid())
+  title       String
+  description String   @db.Text
+  category    String?
+  tags        Tag[]
+  status      String   @default("active") // active, archived, exported
+  aiSuggestions String?  @db.Text
+  exportedToProjectId String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  color     String   @default("#6366f1")
+  ideas     Idea[]
+  createdAt DateTime @default(now())
+}
+
+model Project {
+  id              String   @id @default(uuid())
+  name            String
+  description     String   @db.Text
+  status          String   @default("planning") // planning, in-progress, completed
+  type            String?  // web-app, mobile-app, api, etc.
+  
+  // Requirements
+  requirements    String?  @db.Text
+  technicalSpecs  String?  @db.Text
+  architecture    String?  @db.Text
+  
+  // Timeline & Resources
+  estimatedDuration String?
+  startDate       DateTime?
+  targetDate      DateTime?
+  
+  // Progress tracking
+  currentPhase    String   @default("inception") // inception, creation, deployment, subscription
+  completionPercentage Int  @default(0)
+  
+  // Relations
+  milestones      Milestone[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([status])
+  @@index([currentPhase])
+}
+
+model Milestone {
+  id          String   @id @default(uuid())
+  title       String
+  description String?  @db.Text
+  status      String   @default("pending") // pending, in-progress, completed
+  dueDate     DateTime?
+  completedAt DateTime?
+  
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([status])
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  module      String   // brainstorming, inception, creation, etc.
+  action      String   // created, updated, deleted, exported, etc.
+  entityType  String   // idea, project, milestone
+  entityId    String
+  details     String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  @@index([module])
+  @@index([createdAt])
+}
