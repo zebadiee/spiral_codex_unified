@@ -83,7 +83,7 @@ export function ComingSoonModule({ title, iconName, description, features, gradi
               Planned Features
             </CardTitle>
             <CardDescription>
-              This module is currently under development. Here's what you can expect:
+              This module is currently under development. Here&apos;s what you can expect:
             </CardDescription>
           </CardHeader>
           
@@ -119,7 +119,7 @@ export function ComingSoonModule({ title, iconName, description, features, gradi
           <Bell className="h-8 w-8 text-blue-400 mx-auto mb-3" />
           <h3 className="text-lg font-semibold mb-2">Stay Updated</h3>
           <p className="text-sm text-slate-400 mb-4 max-w-md">
-            We're working hard to bring you this module. Check back soon for updates!
+            We&apos;re working hard to bring you this module. Check back soon for updates!
           </p>
           <div className="flex gap-2 justify-center">
             <Button variant="outline" size="sm">

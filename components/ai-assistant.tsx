@@ -96,13 +96,13 @@ export function AIAssistant() {
                       </div>
                       <div className="flex-1 bg-blue-500/10 rounded-lg p-3 border border-blue-500/20">
                         <p className="text-sm text-slate-300">
-                          Hello! I'm your AI assistant. I can help you with:
+                          Hello! I&apos;m your AI assistant. I can help you with:
                         </p>
                         <ul className="mt-2 space-y-1 text-xs text-slate-400">
-                          <li>• Generating and enhancing ideas</li>
-                          <li>• Project planning and requirements</li>
-                          <li>• Architecture recommendations</li>
-                          <li>• Timeline estimation</li>
+                          <li>- Generating and enhancing ideas</li>
+                          <li>- Project planning and requirements</li>
+                          <li>- Architecture recommendations</li>
+                          <li>- Timeline estimation</li>
                         </ul>
                       </div>
                     </motion.div>

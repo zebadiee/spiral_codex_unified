@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Lightbulb, FolderKanban, CheckCircle2, Tag } from 'lucide-react';
 
@@ -21,23 +21,25 @@ export function HUDStats() {
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
+  const fetchStats = useCallback(async () => {
+    setIsLoading(true);
 
-  const fetchStats = async () => {
     try {
       const response = await fetch('/api/stats');
       if (response?.ok) {
         const data = await response.json();
-        setStats(data?.stats ?? stats);
+        setStats((prev) => data?.stats ?? prev);
       }
     } catch (error) {
       console.error('Failed to fetch stats:', error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
   const statItems = [
     { label: 'Active Ideas', value: stats?.activeIdeas ?? 0, icon: Lightbulb, color: 'text-yellow-400' },

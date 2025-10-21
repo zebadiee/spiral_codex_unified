@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { 
@@ -36,13 +36,14 @@ export function ProjectDetailClient({ projectId }: ProjectDetailClientProps) {
   // Edit form state
   const [editData, setEditData] = useState<Partial<Project>>({});
 
-  useEffect(() => {
-    if (projectId) {
-      fetchProject();
+  const fetchProject = useCallback(async () => {
+    if (!projectId) {
+      setIsLoading(false);
+      return;
     }
-  }, [projectId]);
 
-  const fetchProject = async () => {
+    setIsLoading(true);
+
     try {
       const response = await fetch(`/api/projects/${projectId}`);
       if (response?.ok) {
@@ -55,7 +56,11 @@ export function ProjectDetailClient({ projectId }: ProjectDetailClientProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [projectId]);
+
+  useEffect(() => {
+    fetchProject();
+  }, [fetchProject]);
 
   const handleSave = async () => {
     setIsSaving(true);
