@@ -1,6 +1,11 @@
 # Q: How does Codex agent assist with code generation and completion?
 # R: Codex specializes in code synthesis, pattern recognition, and technical implementation.
 
+import importlib
+import os
+import sys
+from typing import Any, Dict
+
 
 class CodexAgent:
     """
@@ -97,3 +102,102 @@ class CodexAgent:
             ],
             "context": context,
         }
+
+
+class AgentOrchestrator:
+    """
+    Coordinates Spiral Codex agents for one-shot routing scenarios.
+    Embedded here so Codex can act as the core coordinator when invoked directly.
+    """
+
+    def __init__(self):
+        root = os.path.dirname(os.path.dirname(__file__))
+        if root not in sys.path:
+            sys.path.insert(0, root)
+
+        AgentRegistry = importlib.import_module("agents.agent_registry").AgentRegistry
+        self.memory: Dict[str, Any] = {}
+        self.registry = AgentRegistry(self.memory)
+        self.active_agents: Dict[str, Any] = {}
+        self._initialized = False
+
+    def initialize_agents(self) -> Dict[str, Any]:
+        if not self._initialized:
+            self.registry.register_all()
+            self.active_agents = self.registry.all()
+            self._initialized = True
+        return {
+            "status": "initialized",
+            "agent_count": len(self.active_agents),
+            "agents": list(self.active_agents.keys()),
+        }
+
+    def _ensure_agents(self):
+        if not self._initialized:
+            init_status = self.initialize_agents()
+            agents = init_status.get("agents", [])
+            for agent_name in agents:
+                print(f"[+] Loaded {agent_name}")
+
+    def route_task(self, task: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Route task to appropriate agent based on type.
+        """
+        self._ensure_agents()
+        task_type = task.get("task_type", "")
+
+        if any(x in task_type for x in ["code", "debug", "refactor", "implement"]):
+            agent = self.active_agents.get("ƒCODEX")
+            return agent.handle(task) if agent else {"error": "Codex not available"}
+        elif any(
+            x in task_type
+            for x in ["analysis", "planning", "documentation", "review", "reasoning"]
+        ):
+            agent = self.active_agents.get("ƒCLAUDE")
+            return agent.handle(task) if agent else {"error": "Claude not available"}
+        elif "entropy" in task_type or "vibe" in task_type:
+            agent = self.active_agents.get("ƒVIBE_KEEPER")
+            return agent.handle(task) if agent else {"error": "VibeKeeper not available"}
+        elif "archive" in task_type or "store" in task_type:
+            agent = self.active_agents.get("ƒARCHIVIST")
+            return agent.handle(task) if agent else {"error": "Archivist not available"}
+        else:
+            return {"error": "Unknown task type", "task": task}
+
+    def route(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Lightweight wrapper to support one-shot bootstrapping payloads that
+        don't specify task_type explicitly.
+        """
+        self._ensure_agents()
+        task_type = payload.get("task_type")
+        if not task_type:
+            task_type = "code_generation"
+            payload = {
+                "task_type": task_type,
+                "context": {
+                    "prompt": payload.get("prompt"),
+                    "task": payload.get("task"),
+                    "approx_lines": payload.get("approx_lines", 0),
+                },
+                "language": payload.get("language", "python"),
+            }
+
+        result = self.route_task(payload)
+        handled_by = result.get("agent", "unknown")
+        context = payload.get("context") or {}
+        prompt = context.get("prompt") or payload.get("prompt") or payload.get("task_type", "task")
+        agent_label = handled_by.split("ƒ")[-1] if isinstance(handled_by, str) else handled_by
+        print(f"[→] {agent_label} handling: {prompt}")
+        return result
+
+
+if __name__ == "__main__":
+    orchestrator = AgentOrchestrator()
+    orchestrator.route(
+        {
+            "prompt": "Initial handshake",
+            "task": "boot",
+            "approx_lines": 0,
+        }
+    )
