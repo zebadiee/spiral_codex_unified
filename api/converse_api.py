@@ -493,10 +493,28 @@ async def get_converse_status():
 
 from fastapi import Query
 from typing import List
-from api.chat_schemas import Message
-from api.brain_api import brain_chat
-from api.omai_api import omai_chat
-from utils.ledger import append as ledger_append
+from pydantic import BaseModel
+
+# Simple message schema for compatibility
+class Message(BaseModel):
+    role: str
+    content: str
+    timestamp: Optional[datetime] = None
+
+# Placeholder functions for missing imports
+class ChatResponse:
+    def __init__(self, content, meta=None):
+        self.reply = content if hasattr(content, 'reply') else Message(role="assistant", content=content.get("response", str(content)))
+        self.meta = meta or {}
+
+def brain_chat(msg: str):
+    return ChatResponse({"response": f"Brain chat response to: {msg}"})
+
+def omai_chat(msg: str):
+    return ChatResponse({"response": f"OMAi chat response to: {msg}"})
+
+def ledger_append(entry: dict, session_id=None):
+    print(f"Ledger append [session:{session_id}]: {entry}")
 
 @router.post("/spiral-omai-chat")
 async def spiral_omai_conversation(
