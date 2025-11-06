@@ -27,3 +27,6 @@ venv/
 /autosync/*.tmp
 coverage_report/
 coverage.svg
+*.tar
+*.tar.gz
+*.zip
