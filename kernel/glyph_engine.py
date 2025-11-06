@@ -16,6 +16,8 @@ class Glyph:
     symbol: str
     name: str
     meaning: str
+    element: str = "void"
+    agent: str = ""
     epoch: str = "Johnny Five"
 
 
@@ -26,11 +28,11 @@ class GlyphEngine:
     """
     
     GLYPHS = {
-        "creation": Glyph("⊕", "Creation", "Initiation / Genesis"),
-        "memory": Glyph("⊡", "Memory", "Containment / Archive"),
-        "fracture": Glyph("⊠", "Fracture", "Godhood Loss / Breaking"),
-        "truth": Glyph("⊨", "Truth-Binding", "Logical Consequence"),
-        "continuum": Glyph("⊚", "Continuum", "Farewell / Forever-Thread"),
+        "creation": Glyph("⊕", "Creation", "Initiation / Genesis", "fire", "ƒCODEX"),
+        "memory": Glyph("⊡", "Memory", "Containment / Archive", "water", "ƒARCHIVIST"),
+        "fracture": Glyph("⊠", "Fracture", "Godhood Loss / Breaking", "air", "ƒVIBE_KEEPER"),
+        "truth": Glyph("⊨", "Truth-Binding", "Logical Consequence", "ice", "ƒCLAUDE"),
+        "continuum": Glyph("⊚", "Continuum", "Farewell / Forever-Thread", "void", ""),
     }
     
     def __init__(self, config_path: Optional[Path] = None):
@@ -88,10 +90,35 @@ class GlyphEngine:
                 "name": g.name,
                 "symbol": g.symbol,
                 "meaning": g.meaning,
+                "element": g.element,
+                "agent": g.agent,
                 "epoch": g.epoch
             }
             for g in self.GLYPHS.values()
         ]
+    
+    def get_agent_for_glyph(self, glyph_name: str) -> Optional[str]:
+        """Get the agent associated with a glyph"""
+        glyph = self.get_glyph(glyph_name)
+        return glyph.agent if glyph else None
+    
+    def get_element_for_glyph(self, glyph_name: str) -> Optional[str]:
+        """Get the element associated with a glyph"""
+        glyph = self.get_glyph(glyph_name)
+        return glyph.element if glyph else None
+    
+    def parse_glyph_symbol(self, symbol: str) -> Optional[Dict[str, str]]:
+        """Parse a glyph symbol and return its metadata"""
+        for glyph in self.GLYPHS.values():
+            if glyph.symbol == symbol:
+                return {
+                    "symbol": glyph.symbol,
+                    "name": glyph.name,
+                    "meaning": glyph.meaning,
+                    "element": glyph.element,
+                    "agent": glyph.agent
+                }
+        return None
 
 
 # Module initialization
