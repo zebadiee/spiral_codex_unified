@@ -66,3 +66,87 @@ app.include_router(converse_router)
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+# === Unified Chat: Spiral mouthpiece with OMAi enrichment ===
+from fastapi import APIRouter, Body
+import os, httpx, time
+chat_router = APIRouter()
+OMAI_URL = os.getenv("OMAI_URL","http://localhost:7016")
+
+@chat_router.post("/chat")
+async def unified_chat(payload: dict = Body(...)):
+    t0 = time.time()
+    msg = (payload.get("message") or "").strip()
+    sid = payload.get("session_id","ui")
+    want_vault = payload.get("vault_query", True)
+    k = int(payload.get("max_snips", 3))
+
+    vault_refs = []
+    if want_vault and msg:
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as cli:
+                r = await cli.post(f"{OMAI_URL}/api/context/query", json={"query": msg, "limit": k})
+            data = r.json()
+            vault_refs = [
+                {"title": x.get("title"), "path": x.get("path"), "snippet": x.get("snippet")}
+                for x in data.get("results", [])
+            ]
+        except Exception:
+            vault_refs = []
+
+    # Simple response for now since we don't have the full converse API
+    reply_text = f"I received your message: '{msg}'. Vault found {len(vault_refs)} references."
+    
+    return {"reply": reply_text, "vault": {"count": len(vault_refs), "refs": vault_refs}, "latency_ms": int((time.time()-t0)*1000)}
+
+try:
+    app.include_router(chat_router, prefix="/v1", tags=["chat"])
+except Exception as e:
+    print(f"Could not include router: {e}")
+
+
+# === Unified Chat: Spiral mouthpiece with OMAi enrichment ===
+from fastapi import APIRouter, Body
+import os, httpx, time
+
+chat_router = APIRouter()
+OMAI_URL = os.getenv("OMAI_URL", "http://localhost:7016")
+
+@chat_router.post("/chat")
+async def unified_chat(payload: dict = Body(...)):
+    t0 = time.time()
+    msg = (payload.get("message") or "").strip()
+    sid = payload.get("session_id", "ui")
+    want_vault = payload.get("vault_query", True)
+    k = int(payload.get("max_snips", 3))
+
+    vault_refs = []
+    if want_vault and msg:
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as cli:
+                r = await cli.post(f"{OMAI_URL}/api/context/query", json={"query": msg, "limit": k})
+            data = r.json()
+            vault_refs = [
+                {"title": x.get("title"), "path": x.get("path"), "snippet": x.get("snippet")}
+                for x in data.get("results", [])
+            ]
+        except Exception:
+            vault_refs = []
+
+    async with httpx.AsyncClient(timeout=30.0) as cli:
+        res = await cli.get(
+            "http://localhost:8000/v1/converse/run",
+            params={"seed": msg, "turns": 1, "session_id": sid}
+        )
+    reply = res.json()
+    return {
+        "reply": reply,
+        "vault": {"count": len(vault_refs), "refs": vault_refs},
+        "latency_ms": int((time.time() - t0) * 1000)
+    }
+
+try:
+    app.include_router(chat_router, prefix="/v1", tags=["chat"])
+except Exception:
+    pass
