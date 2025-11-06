@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Trial Lesson Extraction Timer
+Requires=spiral-lessons.service
+
+[Timer]
+OnCalendar=daily
+OnCalendar=*-*-* 00:10:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

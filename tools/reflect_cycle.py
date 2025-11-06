@@ -15,6 +15,11 @@ from pathlib import Path
 from typing import Dict, List, Any, Tuple
 import subprocess
 import sys
+import os
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from utils.omai_bridge import available as omai_available, enrich_reflection, get_daily_context
 
 class ReflectionCycle:
     """Core reflection engine for Spiral Codex Mother Phase"""
@@ -38,6 +43,13 @@ class ReflectionCycle:
         print("🌀 Spiral Codex Unified - Reflection Cycle v2.1")
         print("=" * 50)
 
+        # Check OMAi availability
+        omai_status = omai_available()
+        if omai_status:
+            print("🧠 OMAi Context API: AVAILABLE")
+        else:
+            print("⚠️  OMAi Context API: Offline (proceeding without vault enrichment)")
+
         # Step 1: Analyze ledger activity
         ledger_analysis = self._analyze_ledger()
         print(f"📊 Ledger Analysis: {ledger_analysis['total_conversations']} conversations")
@@ -52,6 +64,13 @@ class ReflectionCycle:
 
         # Step 4: Create reflection entry
         reflection = self._create_reflection(ledger_analysis, insights, improvements)
+        
+        # Step 4.5: Enrich with OMAi vault context (if available)
+        if omai_status:
+            print("🔗 Enriching reflection with vault context...")
+            reflection = enrich_reflection(reflection)
+            vault_count = reflection.get("vault_enrichments", 0)
+            print(f"   Added {vault_count} vault references")
 
         # Step 5: Verify system integrity
         integrity_check = self._verify_system_integrity()

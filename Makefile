@@ -1,4 +1,4 @@
-.PHONY: help venv install run test-ledger ingest telemetry-tail telemetry-test test-rag
+.PHONY: help venv install run test-ledger ingest telemetry-tail telemetry-test test-rag lessons health reflect
 
 PYTHON := python3
 VENV := .venv
@@ -6,7 +6,7 @@ BIN := $(VENV)/bin
 PORT := 8000
 
 help:
-	@echo "Commands: venv install run test-ledger ingest telemetry-tail test-rag"
+	@echo "Commands: venv install run test-ledger ingest telemetry-tail test-rag lessons health reflect"
 
 venv:
 	$(PYTHON) -m venv $(VENV) --system-site-packages
@@ -44,3 +44,22 @@ test-rag:
 	@$(BIN)/python test_rag.py
 	@echo "\n--- RAG database ---"
 	@sqlite3 data/embeddings.sqlite "SELECT COUNT(*) as snippets FROM embeddings" 2>/dev/null || echo "No DB yet"
+
+lessons:
+	@echo "🧠 Extracting lessons from trials..."
+	@$(BIN)/python tools/summarize_trials.py --hours 24
+	@echo "\n--- Recent lessons ---"
+	@tail -n 5 data/omai_lessons.jsonl 2>/dev/null || echo "No lessons yet"
+
+health:
+	@echo "🏥 System Health Check"
+	@echo "\n📊 Trial Summary (24h):"
+	@$(BIN)/python -c "from utils.trials import trial_summary; import json; print(json.dumps(trial_summary(24), indent=2))" 2>/dev/null || echo "No trials logged"
+	@echo "\n📈 Telemetry (last 10):"
+	@tail -n 10 logs/wean.csv 2>/dev/null || echo "No telemetry"
+	@echo "\n🧠 OMAi Bridge:"
+	@$(BIN)/python -c "from utils.omai_bridge import available; print('✅ ONLINE' if available() else '❌ OFFLINE')" 2>/dev/null
+
+reflect:
+	@echo "🌀 Running reflection cycle..."
+	@$(BIN)/python tools/reflect_cycle.py
