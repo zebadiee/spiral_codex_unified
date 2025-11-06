@@ -1,0 +1,69 @@
+{
+  "test_timestamp": "2025-11-06T17:07:43.181032+00:00",
+  "test_type": "advanced_chaos_engineering",
+  "individual_tests": {
+    "high_concurrency_burst": {
+      "total_requests": 100,
+      "successful_requests": 0,
+      "failed_requests": 100,
+      "error_rate": 1.0,
+      "p95_latency_ms": Infinity,
+      "mean_latency_ms": Infinity,
+      "stability_score": 0.16000000000000003
+    },
+    "large_payloads": {
+      "total_requests": 50,
+      "successful_requests": 50,
+      "failed_requests": 0,
+      "error_rate": 0.0,
+      "p95_latency_ms": 10.16995906829834,
+      "mean_latency_ms": 4.5024824142456055,
+      "stability_score": 0.9569490122795105
+    },
+    "rapid_session_creation": {
+      "total_requests": 100,
+      "successful_requests": 100,
+      "failed_requests": 0,
+      "error_rate": 0.0,
+      "p95_latency_ms": 12.874698638916016,
+      "mean_latency_ms": 5.815777778625488,
+      "stability_score": 0.9561375904083252
+    },
+    "mixed_workload": {
+      "total_requests": 2319,
+      "successful_requests": 2319,
+      "failed_requests": 0,
+      "error_rate": 0.0,
+      "p95_latency_ms": 10.002732276916504,
+      "mean_latency_ms": 3.7930242045782103,
+      "stability_score": 0.956999180316925
+    },
+    "error_conditions": {
+      "total_requests": 4,
+      "successful_requests": 1,
+      "failed_requests": 3,
+      "error_rate": 0.75,
+      "p95_latency_ms": 3.1232833862304688,
+      "mean_latency_ms": 3.1232833862304688,
+      "stability_score": 0.5090630149841309
+    }
+  },
+  "overall_summary": {
+    "total_requests": 2573,
+    "successful_requests": 2470,
+    "failed_requests": 103,
+    "error_rate": 0.04003109211037699,
+    "p95_latency_ms": 10.087585449218746,
+    "mean_latency_ms": 3.8890074139181903,
+    "stability_score": 0.8288742296120281
+  },
+  "assessment": {
+    "overall_stability": "Good",
+    "bottlenecks": [
+      "High latency in high_concurrency_burst: infms",
+      "High error rate in high_concurrency_burst: 100.00%",
+      "High error rate in error_conditions: 75.00%"
+    ],
+    "recommendations": []
+  }
+}

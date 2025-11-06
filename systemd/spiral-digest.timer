@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Curator Digest Generation Timer
+Requires=spiral-digest.service
+
+[Timer]
+OnCalendar=00:05 UTC
+Persistent=true
+
+[Install]
+WantedBy=timers.target

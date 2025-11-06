@@ -20,6 +20,7 @@ import os
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils.omai_bridge import available as omai_available, enrich_reflection, get_daily_context
+from utils.trials import get_logger
 
 class ReflectionCycle:
     """Core reflection engine for Spiral Codex Mother Phase"""
@@ -62,26 +63,34 @@ class ReflectionCycle:
         improvements = self._identify_improvements(ledger_analysis, insights)
         print(f"🔧 Identified {len(improvements)} improvement opportunities")
 
-        # Step 4: Create reflection entry
-        reflection = self._create_reflection(ledger_analysis, insights, improvements)
-        
-        # Step 4.5: Enrich with OMAi vault context (if available)
+        # Step 4: Analyze failure patterns
+        print("🔍 Analyzing failure patterns...")
+        failure_analysis = self._analyze_failure_patterns()
+        print(f"   Found {failure_analysis['total_failures']} failures across {failure_analysis['categories']} categories")
+
+        # Step 5: Create reflection entry
+        reflection = self._create_reflection(ledger_analysis, insights, improvements, failure_analysis)
+
+        # Step 5.5: Enrich with OMAi vault context (if available)
         if omai_status:
             print("🔗 Enriching reflection with vault context...")
             reflection = enrich_reflection(reflection)
             vault_count = reflection.get("vault_enrichments", 0)
             print(f"   Added {vault_count} vault references")
 
-        # Step 5: Verify system integrity
+        # Step 6: Verify system integrity
         integrity_check = self._verify_system_integrity()
 
-        # Step 6: Save reflection
+        # Step 7: Save reflection
         self._save_reflection(reflection)
 
-        # Step 7: Update OMAi lessons
+        # Step 8: Update OMAi lessons
         self._update_omai_lessons(insights)
 
-        # Step 8: Generate summary report
+        # Step 9: Generate failure classifier outputs
+        self._generate_failure_outputs()
+
+        # Step 10: Generate summary report
         summary = self._generate_summary(reflection, integrity_check)
 
         print(f"✅ Reflection cycle complete: {self.reflection_file}")
@@ -244,7 +253,7 @@ class ReflectionCycle:
 
         return improvements
 
-    def _create_reflection(self, ledger_analysis: Dict, insights: List[Dict], improvements: List[Dict]) -> Dict[str, Any]:
+    def _create_reflection(self, ledger_analysis: Dict, insights: List[Dict], improvements: List[Dict], failure_analysis: Dict = None) -> Dict[str, Any]:
         """Create main reflection entry"""
         reflection = {
             "cycle_date": self.cycle_date,
@@ -255,6 +264,7 @@ class ReflectionCycle:
             "ledger_analysis": ledger_analysis,
             "insights": insights,
             "improvements": improvements,
+            "failure_analysis": failure_analysis or {},
             "system_state": {
                 "autonomous": True,
                 "local_processing": True,
@@ -368,6 +378,40 @@ class ReflectionCycle:
                 "Run next reflection cycle in 24 hours"
             ]
         }
+
+    def _analyze_failure_patterns(self) -> Dict[str, Any]:
+        """Analyze recent failure patterns from trial logs"""
+        trial_logger = get_logger()
+
+        # Get failure summary from trials
+        summary = trial_logger.generate_summary(since_hours=24)
+        failures_by_category = trial_logger.get_failures_by_category(since_hours=24)
+
+        return {
+            "total_failures": summary["failures"],
+            "categories": len(summary["failure_categories"]),
+            "failure_breakdown": summary["failure_categories"],
+            "top_failure": summary["top_failure"],
+            "success_rate": summary["success_rate"]
+        }
+
+    def _generate_failure_outputs(self):
+        """Generate failure classifier outputs (trials_labeled.jsonl and failures_top5.md)"""
+        print("📝 Generating failure classifier outputs...")
+
+        trial_logger = get_logger()
+
+        try:
+            # Generate trials_labeled.jsonl
+            labeled_file = trial_logger.generate_labeled_trials()
+            print(f"   ✓ Created: {labeled_file}")
+
+            # Generate data/lessons/failures_top5.md
+            top5_file = trial_logger.generate_top5_failures()
+            print(f"   ✓ Created: {top5_file}")
+
+        except Exception as e:
+            print(f"   ❌ Error generating failure outputs: {e}")
 
 
 def main():

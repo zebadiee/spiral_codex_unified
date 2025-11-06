@@ -13,7 +13,7 @@ from pathlib import Path
 import hashlib
 from datetime import datetime
 import time
-from utils.rag import available as rag_available, enrich_prompt
+from utils.rag import available as rag_available, enrich_prompt, retrieve, retrieve_legacy, reset_models
 from utils.telemetry import log_wean
 
 router = APIRouter(prefix="/v1/brain", tags=["brain"])
@@ -56,15 +56,41 @@ class LedgerEntry(BaseModel):
 
 def _make_plan(goal: str, max_steps: int, context: Dict[str, Any]) -> BrainPlan:
     """Generate a multi-step plan (RAG-enhanced when available)"""
-    
+
     # Check if RAG is available and enrich the goal
     base_goal = goal
     rag_used = False
-    
+    rag_method = "none"
+
     if rag_available():
-        enriched_goal = enrich_prompt(goal, context_query=goal, max_snippets=3)
-        if enriched_goal != goal:
-            goal = enriched_goal
+        # Use enhanced RAG for context retrieval
+        rag_results = retrieve(goal, top_k=3)
+        if rag_results:
+            rag_method = rag_results[0].get('rank_method', 'bm25_only')
+
+            # Build context from retrieved snippets
+            context_snippets = []
+            for result in rag_results:
+                source = result.get('source', 'unknown')
+                content = result.get('content', '')
+                bm25_score = result.get('bm25_score', 0)
+                vector_score = result.get('vector_score', 0)
+
+                snippet = f"[{source}] {content}"
+                if bm25_score > 0:
+                    snippet += f" (BM25:{bm25_score:.3f}"
+                    if vector_score > 0:
+                        snippet += f", Vec:{vector_score:.3f}"
+                    snippet += ")"
+
+                context_snippets.append(snippet)
+
+            # Create enriched prompt with context
+            context_block = "## Retrieved Context (BM25 + Vector Tie-Break)\n\n"
+            context_block += "\n".join([f"• {snippet}" for snippet in context_snippets])
+            context_block += f"\n\n## Original Goal\n{goal}"
+
+            goal = context_block
             rag_used = True
     
     steps = []
@@ -100,7 +126,7 @@ def _make_plan(goal: str, max_steps: int, context: Dict[str, Any]) -> BrainPlan:
     
     rationale = f"Generated {len(steps)}-step plan for: {base_goal}"
     if rag_used:
-        rationale += " | RAG: context-enriched"
+        rationale += f" | RAG: {rag_method} context-enriched"
     if context:
         rationale += f" | Context keys: {list(context.keys())}"
     
@@ -163,20 +189,41 @@ def plan(req: BrainRequest) -> BrainResponse:
         if req.hints:
             thoughts.append(Thought(role="planner", text=f"Considering hints: {', '.join(req.hints)}"))
         
+        # Get RAG results for artifacts if available
+        rag_results = []
+        if rag_used and rag_available():
+            rag_results = retrieve(req.goal, top_k=3)
+
         # Artifacts
         artifacts = {
             "context_keys": list(req.context.keys()) if req.context else [],
             "goal": req.goal,
             "step_count": len(plan.steps),
-            "rag_enabled": rag_used
+            "rag_enabled": rag_used,
+            "rag_method": rag_method if rag_used else "none",
+            "rag_results_count": len(rag_results) if rag_results else 0
         }
+
+        # Add RAG scoring details if available
+        if rag_results:
+            artifacts["rag_scoring"] = [
+                {
+                    "rank": i + 1,
+                    "source": r.get('source', 'unknown'),
+                    "bm25_score": r.get('bm25_score', 0),
+                    "vector_score": r.get('vector_score', 0),
+                    "method": r.get('rank_method', 'unknown')
+                }
+                for i, r in enumerate(rag_results)
+            ]
         
         # Prove pyyaml works
         _ = yaml.safe_dump({"goal": req.goal, "steps": len(plan.steps)})
         
         ok = True
-        return BrainResponse(plan=plan, thoughts=thoughts, artifacts=artifacts)
+        result = BrainResponse(plan=plan, thoughts=thoughts, artifacts=artifacts)
     except Exception as e:
+        ok = False
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         # Log telemetry
@@ -188,10 +235,8 @@ def plan(req: BrainRequest) -> BrainResponse:
             start_ns=t0,
             ok=ok
         )
-        
-        return BrainResponse(plan=plan, thoughts=thoughts, artifacts=artifacts)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+
+    return result
 
 @router.post("/infer", response_model=Dict[str, Any])
 def infer(payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -271,7 +316,7 @@ async def get_stats():
     try:
         ledger = brain_ledger.load()
         thoughts = [e for e in ledger if "THOUGHT" in e.get("record_id", "")]
-        
+
         return {
             "total_entries": len(ledger),
             "thought_count": len(thoughts),
@@ -281,3 +326,97 @@ async def get_stats():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+class RAGEvalRequest(BaseModel):
+    query: str
+    top_k: int = 3
+
+class RAGEvalResponse(BaseModel):
+    query: str
+    legacy_results: List[Dict[str, Any]]
+    enhanced_results: List[Dict[str, Any]]
+    comparison: Dict[str, Any]
+
+@router.post("/rag/eval", response_model=RAGEvalResponse)
+async def eval_rag(req: RAGEvalRequest):
+    """Compare legacy vs enhanced RAG retrieval"""
+    try:
+        # Legacy retrieval
+        legacy_results = retrieve_legacy(req.query, top_k=req.top_k)
+
+        # Enhanced retrieval
+        enhanced_results = retrieve(req.query, top_k=req.top_k)
+
+        # Comparison analysis
+        comparison = {
+            "legacy_count": len(legacy_results),
+            "enhanced_count": len(enhanced_results),
+            "query": req.query,
+            "improvements": {
+                "bm25_scoring": True,
+                "vector_tiebreak": any(r.get('vector_score', 0) > 0 for r in enhanced_results),
+                "score_transparency": True,
+                "method_tracking": True
+            }
+        }
+
+        # Analyze result overlap
+        legacy_sources = {r['source'] for r in legacy_results}
+        enhanced_sources = {r.get('source') for r in enhanced_results}
+        comparison['source_overlap'] = {
+            'common': list(legacy_sources & enhanced_sources),
+            'legacy_only': list(legacy_sources - enhanced_sources),
+            'enhanced_only': list(enhanced_sources - legacy_sources)
+        }
+
+        return RAGEvalResponse(
+            query=req.query,
+            legacy_results=legacy_results,
+            enhanced_results=enhanced_results,
+            comparison=comparison
+        )
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"RAG evaluation failed: {str(e)}")
+
+@router.post("/rag/reset")
+async def reset_rag():
+    """Reset RAG models to force retraining"""
+    try:
+        reset_models()
+        return {
+            "status": "success",
+            "message": "RAG models reset successfully",
+            "next_query": "Models will be retrained on next retrieval"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"RAG reset failed: {str(e)}")
+
+@router.get("/rag/status")
+async def get_rag_status():
+    """Get RAG system status"""
+    try:
+        from utils.rag import BM25_TOP_K, VECTOR_MODEL, VECTOR_AVAILABLE
+
+        status = {
+            "available": rag_available(),
+            "vector_available": VECTOR_AVAILABLE,
+            "config": {
+                "bm25_top_k": BM25_TOP_K,
+                "vector_model": VECTOR_MODEL
+            },
+            "database_path": str(EMBEDDINGS_DB),
+            "models_loaded": False
+        }
+
+        # Check if models are loaded
+        if rag_available():
+            from utils.rag import _bm25_model, _vector_model
+            status["models_loaded"] = {
+                "bm25": _bm25_model is not None,
+                "vector": _vector_model is not None
+            }
+
+        return status
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"RAG status check failed: {str(e)}")

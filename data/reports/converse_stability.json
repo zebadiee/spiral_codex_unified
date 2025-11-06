@@ -1,0 +1,23 @@
+{
+  "test_timestamp": "2025-11-06T17:06:52.198011+00:00",
+  "test_configuration": {
+    "total_requests": 250,
+    "api_base_url": "http://localhost:8000",
+    "test_type": "chaos_engineering"
+  },
+  "slo_metrics": {
+    "p95_latency_ms": 21.679377555847168,
+    "p99_latency_ms": 28.076667785644528,
+    "mean_latency_ms": 6.76995849609375,
+    "error_rate": 0.0,
+    "total_requests": 250,
+    "successful_requests": 250,
+    "failed_requests": 0,
+    "stability_score": 0.9534961867332458
+  },
+  "stability_analysis": {
+    "score_interpretation": "Excellent - highly stable system",
+    "performance_grade": "A",
+    "recommendations": []
+  }
+}

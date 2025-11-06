@@ -1,4 +1,4 @@
-.PHONY: help venv install run test-ledger ingest telemetry-tail telemetry-test test-rag lessons health reflect
+.PHONY: help venv install run test-ledger ingest telemetry-tail telemetry-test test-rag lessons health reflect digest
 
 PYTHON := python3
 VENV := .venv
@@ -6,7 +6,7 @@ BIN := $(VENV)/bin
 PORT := 8000
 
 help:
-	@echo "Commands: venv install run test-ledger ingest telemetry-tail test-rag lessons health reflect"
+	@echo "Commands: venv install run test-ledger ingest telemetry-tail telemetry-test test-rag lessons health reflect digest"
 
 venv:
 	$(PYTHON) -m venv $(VENV) --system-site-packages
@@ -63,3 +63,9 @@ health:
 reflect:
 	@echo "🌀 Running reflection cycle..."
 	@$(BIN)/python tools/reflect_cycle.py
+
+digest:
+	@echo "📊 Generating curator daily digest..."
+	@$(BIN)/python tools/curator_digest.py
+	@echo "\n--- Latest Digest ---"
+	@head -n 25 data/reports/digest_$$(date +%Y-%m-%d).md 2>/dev/null || echo "No digest yet"

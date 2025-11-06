@@ -1,0 +1,11 @@
+[Unit]
+Description=Curator Cockpit Daily Digest Generator
+After=network.target
+
+[Service]
+Type=oneshot
+User=zebadiee
+WorkingDirectory=/home/zebadiee/Documents/spiral_codex_unified
+ExecStart=/usr/bin/make digest
+StandardOutput=journal
+StandardError=journal

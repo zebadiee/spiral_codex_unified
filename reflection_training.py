@@ -11,6 +11,7 @@ import datetime
 from pathlib import Path
 from typing import List, Dict, Any
 import hashlib
+from utils.rag import enrich_prompt, retrieve, reset_models, available as rag_available
 
 class ReflectionTrainer:
     """Handles reflection training cycles for Spiral Codex"""
@@ -22,17 +23,51 @@ class ReflectionTrainer:
         self.reflection_path.mkdir(parents=True, exist_ok=True)
 
     async def run_reflection_session(self, prompt: str, session_id: str = None):
-        """Run a single reflection conversation session"""
+        """Run a single reflection conversation session with RAG enhancement"""
         if not session_id:
             timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
             session_id = f"reflect_{timestamp}"
+
+        # Enhance prompt with RAG if available
+        rag_enhanced_prompt = prompt
+        rag_context = []
+        if rag_available():
+            try:
+                # Get relevant context using enhanced RAG
+                rag_results = retrieve(prompt, top_k=3)
+                if rag_results:
+                    rag_context = [
+                        {
+                            "source": r.get('source', 'unknown'),
+                            "content": r.get('content', ''),
+                            "bm25_score": r.get('bm25_score', 0),
+                            "vector_score": r.get('vector_score', 0),
+                            "method": r.get('rank_method', 'unknown')
+                        }
+                        for r in rag_results
+                    ]
+
+                    # Create enriched prompt for reflection
+                    rag_enhanced_prompt = enrich_prompt(prompt, context_query=prompt, max_snippets=3)
+                    print(f"  ✅ RAG-enhanced prompt ({len(rag_context)} contexts retrieved)")
+
+            except Exception as e:
+                print(f"  ⚠️  RAG enhancement failed: {e}")
 
         async with aiohttp.ClientSession() as session:
             # Use Brain API for planning and reflection
             try:
                 async with session.post(
                     f"{self.base_url}/v1/brain/plan",
-                    json={"goal": prompt, "max_steps": 3}
+                    json={
+                        "goal": rag_enhanced_prompt,
+                        "max_steps": 3,
+                        "context": {
+                            "original_prompt": prompt,
+                            "rag_enhanced": len(rag_context) > 0,
+                            "rag_context_count": len(rag_context)
+                        }
+                    }
                 ) as response:
                     if response.status == 200:
                         result = await response.json()
@@ -43,7 +78,10 @@ class ReflectionTrainer:
                         combined_result = {
                             "brain_response": result,
                             "collaboration_response": collab_response,
-                            "reflection_type": "planning_and_analysis"
+                            "reflection_type": "planning_and_analysis_with_rag",
+                            "rag_context": rag_context,
+                            "original_prompt": prompt,
+                            "enhanced_prompt": rag_enhanced_prompt != prompt
                         }
 
                         self._save_conversation(session_id, prompt, combined_result)

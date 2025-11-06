@@ -1,0 +1,327 @@
+{
+  "timestamp": "2025-11-06T17:00:00Z",
+  "methodology": "BM25 + Vector Tie-Break vs Legacy Keyword Matching",
+  "evaluation_queries_count": 10,
+  "metrics": {
+    "total_queries": 10,
+    "enhanced_wins": 3,
+    "legacy_wins": 5,
+    "ties": 2,
+    "enhanced_win_rate": 30.0,
+    "legacy_win_rate": 50.0,
+    "tie_rate": 20.0,
+    "avg_improvement_when_enhanced_wins": 31.8,
+    "overall_legacy_relevance": 0.522,
+    "overall_enhanced_relevance": 0.387,
+    "overall_improvement": -26.0
+  },
+  "detailed_results": [
+    {
+      "query": "How does agent routing work in the system?",
+      "legacy_count": 3,
+      "enhanced_count": 3,
+      "legacy_avg_relevance": 0.25,
+      "enhanced_avg_relevance": 0.312,
+      "winner": "enhanced",
+      "improvement_percent": 25.0,
+      "legacy_scores": [
+        0.188,
+        0.375,
+        0.188
+      ],
+      "enhanced_scores": [
+        0.375,
+        0.375,
+        0.188
+      ],
+      "legacy_sources": [
+        "agent_orchestrator.py",
+        "README.md",
+        "agent_orchestrator.py"
+      ],
+      "enhanced_sources": [
+        "README.md",
+        "README.md",
+        "reflection_training.py"
+      ],
+      "enhanced_methods": [
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak"
+      ]
+    },
+    {
+      "query": "What privacy features are implemented?",
+      "legacy_count": 2,
+      "enhanced_count": 2,
+      "legacy_avg_relevance": 0.2,
+      "enhanced_avg_relevance": 0.2,
+      "winner": "tie",
+      "improvement_percent": 0.0,
+      "legacy_scores": [
+        0.2,
+        0.2
+      ],
+      "enhanced_scores": [
+        0.2,
+        0.2
+      ],
+      "legacy_sources": [
+        "omai_ingest.py",
+        "omai_ingest.py"
+      ],
+      "enhanced_sources": [
+        "omai_ingest.py",
+        "omai_ingest.py"
+      ],
+      "enhanced_methods": [
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak"
+      ]
+    },
+    {
+      "query": "Explain the telemetry system and its data format",
+      "legacy_count": 3,
+      "enhanced_count": 3,
+      "legacy_avg_relevance": 0.229,
+      "enhanced_avg_relevance": 0.333,
+      "winner": "enhanced",
+      "improvement_percent": 45.5,
+      "legacy_scores": [
+        0.125,
+        0.125,
+        0.438
+      ],
+      "enhanced_scores": [
+        0.438,
+        0.438,
+        0.125
+      ],
+      "legacy_sources": [
+        "utils/rag.py",
+        "reflection_training.py",
+        "telemetry.py"
+      ],
+      "enhanced_sources": [
+        "telemetry.py",
+        "telemetry.py",
+        "reflection_training.py"
+      ],
+      "enhanced_methods": [
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak"
+      ]
+    },
+    {
+      "query": "BM25 scoring algorithm implementation",
+      "legacy_count": 1,
+      "enhanced_count": 1,
+      "legacy_avg_relevance": 0.5,
+      "enhanced_avg_relevance": 0.5,
+      "winner": "tie",
+      "improvement_percent": 0.0,
+      "legacy_scores": [
+        0.5
+      ],
+      "enhanced_scores": [
+        0.5
+      ],
+      "legacy_sources": [
+        "utils/rag.py"
+      ],
+      "enhanced_sources": [
+        "utils/rag.py"
+      ],
+      "enhanced_methods": [
+        "bm25+vector_tiebreak"
+      ]
+    },
+    {
+      "query": "Vector embeddings and semantic similarity",
+      "legacy_count": 1,
+      "enhanced_count": 3,
+      "legacy_avg_relevance": 0.8,
+      "enhanced_avg_relevance": 0.4,
+      "winner": "legacy",
+      "improvement_percent": 100.0,
+      "legacy_scores": [
+        0.8
+      ],
+      "enhanced_scores": [
+        0.8,
+        0.2,
+        0.2
+      ],
+      "legacy_sources": [
+        "utils/rag.py"
+      ],
+      "enhanced_sources": [
+        "utils/rag.py",
+        "api/brain_api.py",
+        "agent_orchestrator.py"
+      ],
+      "enhanced_methods": [
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak"
+      ]
+    },
+    {
+      "query": "API documentation and validation features",
+      "legacy_count": 1,
+      "enhanced_count": 3,
+      "legacy_avg_relevance": 0.9,
+      "enhanced_avg_relevance": 0.433,
+      "winner": "legacy",
+      "improvement_percent": 107.7,
+      "legacy_scores": [
+        0.9
+      ],
+      "enhanced_scores": [
+        0.9,
+        0.2,
+        0.2
+      ],
+      "legacy_sources": [
+        "api/brain_api.py"
+      ],
+      "enhanced_sources": [
+        "api/brain_api.py",
+        "agent_orchestrator.py",
+        "telemetry.py"
+      ],
+      "enhanced_methods": [
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak"
+      ]
+    },
+    {
+      "query": "Database storage and SQLite integration",
+      "legacy_count": 1,
+      "enhanced_count": 3,
+      "legacy_avg_relevance": 0.6,
+      "enhanced_avg_relevance": 0.333,
+      "winner": "legacy",
+      "improvement_percent": 80.0,
+      "legacy_scores": [
+        0.6
+      ],
+      "enhanced_scores": [
+        0.6,
+        0.2,
+        0.2
+      ],
+      "legacy_sources": [
+        "utils/rag.py"
+      ],
+      "enhanced_sources": [
+        "utils/rag.py",
+        "api/brain_api.py",
+        "agent_orchestrator.py"
+      ],
+      "enhanced_methods": [
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak"
+      ]
+    },
+    {
+      "query": "Reflection training and system improvement",
+      "legacy_count": 1,
+      "enhanced_count": 3,
+      "legacy_avg_relevance": 0.8,
+      "enhanced_avg_relevance": 0.4,
+      "winner": "legacy",
+      "improvement_percent": 100.0,
+      "legacy_scores": [
+        0.8
+      ],
+      "enhanced_scores": [
+        0.8,
+        0.2,
+        0.2
+      ],
+      "legacy_sources": [
+        "reflection_training.py"
+      ],
+      "enhanced_sources": [
+        "reflection_training.py",
+        "api/brain_api.py",
+        "agent_orchestrator.py"
+      ],
+      "enhanced_methods": [
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak"
+      ]
+    },
+    {
+      "query": "Ledger logging and conversation tracking",
+      "legacy_count": 2,
+      "enhanced_count": 3,
+      "legacy_avg_relevance": 0.5,
+      "enhanced_avg_relevance": 0.4,
+      "winner": "legacy",
+      "improvement_percent": 25.0,
+      "legacy_scores": [
+        0.5,
+        0.5
+      ],
+      "enhanced_scores": [
+        0.5,
+        0.5,
+        0.2
+      ],
+      "legacy_sources": [
+        "ledger.py",
+        "ledger.py"
+      ],
+      "enhanced_sources": [
+        "ledger.py",
+        "ledger.py",
+        "api/brain_api.py"
+      ],
+      "enhanced_methods": [
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak"
+      ]
+    },
+    {
+      "query": "Spiral Codex architecture and glyph routing",
+      "legacy_count": 3,
+      "enhanced_count": 3,
+      "legacy_avg_relevance": 0.444,
+      "enhanced_avg_relevance": 0.556,
+      "winner": "enhanced",
+      "improvement_percent": 25.0,
+      "legacy_scores": [
+        0.333,
+        0.667,
+        0.333
+      ],
+      "enhanced_scores": [
+        0.667,
+        0.667,
+        0.333
+      ],
+      "legacy_sources": [
+        "agent_orchestrator.py",
+        "README.md",
+        "agent_orchestrator.py"
+      ],
+      "enhanced_sources": [
+        "README.md",
+        "README.md",
+        "agent_orchestrator.py"
+      ],
+      "enhanced_methods": [
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak",
+        "bm25+vector_tiebreak"
+      ]
+    }
+  ]
+}

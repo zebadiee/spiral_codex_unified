@@ -15,13 +15,11 @@ from enum import Enum
 class ErrorCategory(str, Enum):
     """Automatic error classification categories"""
     TIMEOUT = "timeout"
-    CONFIG = "config"
     NETWORK = "network"
+    CONFIG = "config"
     PROVIDER = "provider"
     SYNTAX = "syntax"
-    DEPENDENCY = "dependency"
-    PERMISSION = "permission"
-    UNKNOWN = "unknown"
+    OTHER = "other"
 
 class TrialLogger:
     """Unified trial/error capture with automatic classification"""
@@ -56,20 +54,19 @@ class TrialLogger:
         if any(kw in error_type for kw in ["syntax", "parse", "indent"]):
             return ErrorCategory.SYNTAX
         
-        if any(kw in error_str for kw in ["no module", "import", "not found", "modulenotfound"]):
-            return ErrorCategory.DEPENDENCY
-        
-        if any(kw in error_str for kw in ["permission", "access denied", "forbidden"]):
-            return ErrorCategory.PERMISSION
-        
         if any(kw in error_str for kw in ["config", "configuration", "env", "environment"]):
             return ErrorCategory.CONFIG
-        
+
         # Check context clues
         if "uvicorn" in context.lower() or "port" in error_str:
             return ErrorCategory.CONFIG
-        
-        return ErrorCategory.UNKNOWN
+
+        # All other patterns (dependency, permission, etc.) map to "other"
+        if any(kw in error_str for kw in ["no module", "import", "not found", "modulenotfound",
+                                          "permission", "access denied", "forbidden"]):
+            return ErrorCategory.OTHER
+
+        return ErrorCategory.OTHER
     
     def log_trial(
         self,
@@ -189,6 +186,124 @@ class TrialLogger:
             "failure_categories": failure_categories,
             "top_failure": max(failure_categories.items(), key=lambda x: x[1])[0] if failure_categories else None
         }
+
+    def generate_labeled_trials(self) -> str:
+        """Generate trials_labeled.jsonl with all trials and their labels"""
+        labeled_path = self.log_dir / "trials_labeled.jsonl"
+
+        if not self.trials_log.exists():
+            # Create empty labeled file
+            labeled_path.touch()
+            return str(labeled_path)
+
+        # Read all trials and ensure they have labels
+        labeled_trials = []
+        with self.trials_log.open("r", encoding="utf-8") as f:
+            for line in f:
+                if line.strip():
+                    trial = json.loads(line)
+
+                    # Ensure error has category label
+                    if not trial.get("success") and "error" in trial:
+                        if "category" not in trial["error"]:
+                            # Try to classify from error message
+                            error_msg = trial["error"].get("message", "")
+                            error_type = trial["error"].get("type", "")
+                            context = trial.get("context", "")
+
+                            # Simple classification fallback
+                            category = self._classify_error_from_strings(error_msg, error_type, context)
+                            trial["error"]["category"] = category
+
+                    labeled_trials.append(trial)
+
+        # Write labeled trials
+        with labeled_path.open("w", encoding="utf-8") as f:
+            for trial in labeled_trials:
+                f.write(json.dumps(trial, default=str) + "\n")
+
+        return str(labeled_path)
+
+    def _classify_error_from_strings(self, error_msg: str, error_type: str, context: str) -> str:
+        """Classify error from string representations"""
+        error_msg = error_msg.lower()
+        error_type = error_type.lower()
+        context = context.lower()
+
+        # Classification rules
+        if any(kw in error_msg for kw in ["timeout", "timed out", "time out"]):
+            return "timeout"
+
+        if any(kw in error_msg for kw in ["connection", "network", "unreachable", "dns"]):
+            return "network"
+
+        if any(kw in error_msg for kw in ["api key", "authentication", "unauthorized", "rate limit"]):
+            return "provider"
+
+        if any(kw in error_type for kw in ["syntax", "parse", "indent"]):
+            return "syntax"
+
+        if any(kw in error_msg for kw in ["config", "configuration", "env", "environment"]):
+            return "config"
+
+        if "uvicorn" in context or "port" in error_msg:
+            return "config"
+
+        return "other"
+
+    def generate_top5_failures(self, since_hours: int = 24) -> str:
+        """Generate TOP5 failure patterns summary"""
+        failures_by_category = self.get_failures_by_category(since_hours)
+
+        # Count failures per category
+        category_counts = {cat: len(trials) for cat, trials in failures_by_category.items()}
+
+        # Sort by count and get top 5
+        top5 = sorted(category_counts.items(), key=lambda x: x[1], reverse=True)[:5]
+
+        # Ensure data/lessons directory exists
+        lessons_dir = Path("data/lessons")
+        lessons_dir.mkdir(parents=True, exist_ok=True)
+
+        # Generate markdown content
+        content = []
+        content.append(f"# TOP5 Failure Patterns - {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}")
+        content.append("")
+        content.append("## 📊 Failure Analysis (24h window)")
+        content.append("")
+        content.append(f"- **Total Failures**: {sum(category_counts.values())}")
+        content.append(f"- **Unique Categories**: {len(category_counts)}")
+        content.append(f"- **Top Category**: {top5[0][0] if top5 else 'None'}")
+        content.append("")
+        content.append("## 🔥 TOP5 Failure Categories")
+        content.append("")
+
+        for i, (category, count) in enumerate(top5, 1):
+            percentage = (count / sum(category_counts.values()) * 100) if category_counts else 0
+            content.append(f"### {i}. **{category.upper()}** - {count} occurrences ({percentage:.1f}%)")
+
+            # Add recent examples
+            examples = failures_by_category.get(category, [])[:3]  # Show up to 3 examples
+            for example in examples:
+                action = example.get("action", "unknown")
+                error_msg = example.get("error", {}).get("message", "No message")
+                content.append(f"   - **{action}**: {error_msg[:100]}...")
+
+            content.append("")
+
+        if len(top5) < 5:
+            content.append("### Note: Fewer than 5 failure categories detected")
+            content.append("")
+
+        content.append("---")
+        content.append("*Auto-generated by Spiral Codex Failure Classifier*")
+
+        # Write to file
+        output_file = lessons_dir / "failures_top5.md"
+        with output_file.open("w", encoding="utf-8") as f:
+            f.write("\n".join(content))
+
+        return str(output_file)
 
 
 # Global singleton instance
