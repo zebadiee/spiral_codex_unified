@@ -1,4 +1,4 @@
-.PHONY: help venv install run test-ledger ingest telemetry-tail telemetry-test test-rag lessons health reflect digest
+.PHONY: help venv install run test-ledger ingest telemetry-tail telemetry-test test-rag lessons health reflect digest mcp-spiral mcp-client mcp-setup
 
 PYTHON := python3
 VENV := .venv
@@ -6,7 +6,7 @@ BIN := $(VENV)/bin
 PORT := 8000
 
 help:
-	@echo "Commands: venv install run test-ledger ingest telemetry-tail telemetry-test test-rag lessons health reflect digest"
+	@echo "Commands: venv install run test-ledger ingest telemetry-tail telemetry-test test-rag lessons health reflect digest mcp-spiral mcp-client mcp-setup"
 
 venv:
 	$(PYTHON) -m venv $(VENV) --system-site-packages
@@ -69,3 +69,21 @@ digest:
 	@$(BIN)/python tools/curator_digest.py
 	@echo "\n--- Latest Digest ---"
 	@head -n 25 data/reports/digest_$$(date +%Y-%m-%d).md 2>/dev/null || echo "No digest yet"
+
+mcp-spiral:
+	@echo "🚀 Starting Spiral MCP server on :7020"
+	@$(BIN)/uvicorn mcp_server:app --host 127.0.0.1 --port 7020 --reload
+
+mcp-client:
+	@echo "🔧 MCP Client operations"
+	@$(BIN)/python mcp_client.py list
+
+mcp-setup:
+	@echo "⚙️ Setting up MCP configuration..."
+	@mkdir -p ~/.config/mcp
+	@echo "servers:" > ~/.config/mcp/servers.yaml
+	@echo "  - id: spiral" >> ~/.config/mcp/servers.yaml
+	@echo "    url: http://127.0.0.1:7020" >> ~/.config/mcp/servers.yaml
+	@echo "  - id: omai" >> ~/.config/mcp/servers.yaml
+	@echo "    url: http://127.0.0.1:7018" >> ~/.config/mcp/servers.yaml
+	@echo "✅ MCP config created at ~/.config/mcp/servers.yaml"
