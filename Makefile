@@ -1,4 +1,4 @@
-.PHONY: help venv install run test-ledger ingest telemetry-tail telemetry-test
+.PHONY: help venv install run test-ledger ingest telemetry-tail telemetry-test test-rag
 
 PYTHON := python3
 VENV := .venv
@@ -6,7 +6,7 @@ BIN := $(VENV)/bin
 PORT := 8000
 
 help:
-	@echo "Commands: venv install run test-ledger ingest telemetry-tail telemetry-test"
+	@echo "Commands: venv install run test-ledger ingest telemetry-tail test-rag"
 
 venv:
 	$(PYTHON) -m venv $(VENV) --system-site-packages
@@ -38,3 +38,9 @@ telemetry-test:
 	@$(BIN)/python agent_orchestrator.py 2>&1 | tail -20
 	@echo "\n--- Telemetry log ---"
 	@tail -n 10 logs/wean.csv 2>/dev/null || echo "No telemetry logged yet"
+
+test-rag:
+	@echo "🔍 Testing RAG (Retrieval-Augmented Generation)..."
+	@$(BIN)/python test_rag.py
+	@echo "\n--- RAG database ---"
+	@sqlite3 data/embeddings.sqlite "SELECT COUNT(*) as snippets FROM embeddings" 2>/dev/null || echo "No DB yet"

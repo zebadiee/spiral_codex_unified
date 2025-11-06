@@ -2,6 +2,7 @@
 """
 Spiral Codex Brain API - Multi-agent planning & execution
 Built with ƒCLAUDE (planning) + ƒCODEX (implementation)
+Enhanced with RAG (Retrieval-Augmented Generation) for context-aware planning
 """
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
@@ -11,6 +12,9 @@ import json
 from pathlib import Path
 import hashlib
 from datetime import datetime
+import time
+from utils.rag import available as rag_available, enrich_prompt
+from utils.telemetry import log_wean
 
 router = APIRouter(prefix="/v1/brain", tags=["brain"])
 
@@ -51,11 +55,22 @@ class LedgerEntry(BaseModel):
 # --- Brain Planning Logic --------------------------------------------------
 
 def _make_plan(goal: str, max_steps: int, context: Dict[str, Any]) -> BrainPlan:
-    """Generate a multi-step plan (can be enhanced with agent_orchestrator later)"""
+    """Generate a multi-step plan (RAG-enhanced when available)"""
+    
+    # Check if RAG is available and enrich the goal
+    base_goal = goal
+    rag_used = False
+    
+    if rag_available():
+        enriched_goal = enrich_prompt(goal, context_query=goal, max_snippets=3)
+        if enriched_goal != goal:
+            goal = enriched_goal
+            rag_used = True
+    
     steps = []
     
     # Analyze goal and generate steps
-    if "api" in goal.lower() or "endpoint" in goal.lower():
+    if "api" in base_goal.lower() or "endpoint" in base_goal.lower():
         steps = [
             "Design API schema with Pydantic models",
             "Implement FastAPI router with endpoints",
@@ -63,14 +78,14 @@ def _make_plan(goal: str, max_steps: int, context: Dict[str, Any]) -> BrainPlan:
             "Write integration tests",
             "Document API with examples"
         ]
-    elif "glyph" in goal.lower():
+    elif "glyph" in base_goal.lower():
         steps = [
             "Parse glyph symbols (⊕⊡⊠⊨⊚)",
             "Map glyphs to elements and agents",
             "Implement glyph engine methods",
             "Add validation and lookups"
         ]
-    elif "agent" in goal.lower():
+    elif "agent" in base_goal.lower():
         steps = [
             "Define agent interface and capabilities",
             "Implement agent routing logic",
@@ -78,12 +93,14 @@ def _make_plan(goal: str, max_steps: int, context: Dict[str, Any]) -> BrainPlan:
             "Create collaboration workflows"
         ]
     else:
-        steps = [f"Step {i+1}: Refine and implement — {goal}" for i in range(max_steps)]
+        steps = [f"Step {i+1}: Refine and implement — {base_goal}" for i in range(max_steps)]
     
     # Limit to max_steps
     steps = steps[:max_steps]
     
-    rationale = f"Generated {len(steps)}-step plan for: {goal}"
+    rationale = f"Generated {len(steps)}-step plan for: {base_goal}"
+    if rag_used:
+        rationale += " | RAG: context-enriched"
     if context:
         rationale += f" | Context keys: {list(context.keys())}"
     
@@ -124,7 +141,13 @@ def health() -> Dict[str, Any]:
 
 @router.post("/plan", response_model=BrainResponse)
 def plan(req: BrainRequest) -> BrainResponse:
-    """Generate multi-step plan for a goal"""
+    """Generate multi-step plan for a goal (RAG-enhanced when available)"""
+    
+    # Start telemetry timer
+    t0 = time.time_ns()
+    rag_used = rag_available()
+    ok = False
+    
     try:
         plan = _make_plan(req.goal, req.max_steps, req.context or {})
         
@@ -134,6 +157,9 @@ def plan(req: BrainRequest) -> BrainResponse:
             Thought(role="critic", text="Plan looks reasonable."),
         ]
         
+        if rag_used:
+            thoughts.append(Thought(role="planner", text="RAG: Retrieved context snippets"))
+        
         if req.hints:
             thoughts.append(Thought(role="planner", text=f"Considering hints: {', '.join(req.hints)}"))
         
@@ -141,11 +167,27 @@ def plan(req: BrainRequest) -> BrainResponse:
         artifacts = {
             "context_keys": list(req.context.keys()) if req.context else [],
             "goal": req.goal,
-            "step_count": len(plan.steps)
+            "step_count": len(plan.steps),
+            "rag_enabled": rag_used
         }
         
         # Prove pyyaml works
         _ = yaml.safe_dump({"goal": req.goal, "steps": len(plan.steps)})
+        
+        ok = True
+        return BrainResponse(plan=plan, thoughts=thoughts, artifacts=artifacts)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        # Log telemetry
+        log_wean(
+            route="brain.plan",
+            provider="rag" if rag_used else "base",
+            task="planning",
+            approx_lines=req.max_steps,
+            start_ns=t0,
+            ok=ok
+        )
         
         return BrainResponse(plan=plan, thoughts=thoughts, artifacts=artifacts)
     except Exception as e:
