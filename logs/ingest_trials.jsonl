@@ -1,0 +1,1 @@
+{"trial_id":"example_init","timestamp":"2025-11-06T00:00:00Z","source_type":"example","url":"https://example.com","fetch_method":"example_init","success":true,"error":null,"response_time_ms":0,"content_length":0,"license":null,"robots_txt_respected":true,"rate_limit_applied":false,"checksum":null,"bullshit_score":null,"metadata":{"init_log":"Trial logging system initialized"}}

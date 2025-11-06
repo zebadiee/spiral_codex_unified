@@ -12,7 +12,25 @@
       ".txt",
       ".md",
       ".json"
-    ]
+    ],
+    "ingest_system": "spiral_codex_v1",
+    "credibility_scoring_enabled": true,
+    "last_updated": "2025-11-06T17:06:49.995856"
+  },
+  "credibility_distribution": {
+    "highly_credible": 0,
+    "credible": 1,
+    "moderate": 2,
+    "questionable": 1,
+    "high_bullshit_risk": 0
+  },
+  "source_statistics": {
+    "local": 4,
+    "reddit": 0,
+    "arxiv": 0,
+    "archive": 0,
+    "youtube": 0,
+    "pdf": 0
   },
   "documents": [
     {
@@ -24,13 +42,24 @@
       "sections": [],
       "tables": [],
       "weight": 1.0,
-      "tags": [],
+      "tags": ["local", "analysis"],
       "frontmatter": {},
       "created_at": "2025-11-06T11:51:16.916446",
       "modified_at": "2025-11-06T11:51:16.916446",
       "word_count": 45,
       "char_count": 488,
-      "is_private": false
+      "is_private": false,
+      "source_type": "local",
+      "credibility_score": {
+        "overall_bullshit_score": 0.45,
+        "credibility_tier": "MODERATE",
+        "source_score": 0.3,
+        "quality_score": 0.4,
+        "consensus_score": 0.5,
+        "citation_score": 0.6,
+        "freshness_score": 0.2,
+        "confidence": 0.7
+      }
     },
     {
       "title": "OMAi API Reference",
