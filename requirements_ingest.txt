@@ -1,0 +1,32 @@
+# Core dependencies for Spiral Codex Ethical Content Ingestion System
+
+# HTTP client for async requests
+aiohttp>=3.8.0
+
+# PDF processing (optional - install if PDF support needed)
+# pdfplumber>=0.7.0
+# PyPDF2>=3.0.0
+
+# XML processing for arXiv API
+# (Usually included with Python, but listed for completeness)
+
+# Reddit API (optional - install if Reddit support needed)
+# asyncpraw>=7.6.0
+
+# YouTube API (optional - install if YouTube support needed)
+# google-api-python-client>=2.70.0
+# google-auth-httplib2>=0.1.0
+# google-auth-oauthlib>=0.5.0
+
+# For development and testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# For data processing and analysis
+pandas>=1.5.0
+
+# For enhanced text processing
+nltk>=3.8.0
+
+# Logging and monitoring
+structlog>=22.0.0

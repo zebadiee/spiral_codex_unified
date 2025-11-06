@@ -1,0 +1,70 @@
+{
+  "max_items_per_source": 20,
+  "max_total_items": 50,
+  "timeout_seconds": 30,
+  "rate_limit_delay": 1.0,
+  "respect_robots_txt": true,
+  "allowed_licenses": [
+    "CC BY",
+    "CC BY-SA",
+    "CC0",
+    "MIT",
+    "Apache-2.0",
+    "Public Domain",
+    "arXiv License",
+    "Reddit Content Policy"
+  ],
+  "min_content_length": 100,
+  "max_content_length": 1000000,
+  "enabled_sources": ["reddit", "arxiv", "archive"],
+  "bullshit_threshold": 0.7,
+  "deduplication_enabled": true,
+  "retry_attempts": 3,
+  "retry_delay": 5.0,
+  "parallel_fetches": 5,
+  "skip_nsfw": true,
+  "youtube_api_key": null,
+  "pdf_urls": [],
+  "integration": {
+    "omai_enabled": true,
+    "reflection_cycle_enabled": true,
+    "wean_telemetry": true
+  },
+  "bullshit_config": {
+    "source_weights": {
+      "arxiv": 0.1,
+      "reddit": 0.6,
+      "youtube": 0.7,
+      "archive": 0.3,
+      "pdf": 0.4,
+      "news": 0.3,
+      "blog": 0.8
+    },
+    "quality_thresholds": {
+      "min_word_count": 100,
+      "min_sentence_length": 5,
+      "max_repetition_ratio": 0.3,
+      "grammar_penalty_threshold": 0.2
+    },
+    "citation_requirements": {
+      "academic_min": 5,
+      "technical_min": 3,
+      "news_min": 2,
+      "opinion_min": 0
+    },
+    "freshness_weights": {
+      "very_fresh": 0.0,
+      "fresh": 0.1,
+      "recent": 0.2,
+      "moderate": 0.3,
+      "old": 0.5,
+      "very_old": 0.8
+    },
+    "weights": {
+      "source": 0.3,
+      "quality": 0.25,
+      "consensus": 0.25,
+      "citation": 0.2
+    }
+  }
+}

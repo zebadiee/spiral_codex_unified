@@ -28,6 +28,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from bullshit import BullshitScorer, ContentMetadata, BullshitScore
 from utils.trial_logger import TrialLogger, IngestTrial
+from utils.omai_bridge import available as omai_available, enrich_reflection, update_omai_ledger
+from utils.telemetry import log_wean
 
 
 
@@ -390,6 +392,7 @@ class IngestDriver:
     async def ingest(self, query: str, sources: Optional[List[str]] = None, max_items: Optional[int] = None) -> IngestResult:
         """Main ingest orchestration"""
         start_time = datetime.now(timezone.utc)
+        start_time_ns = time.time_ns()
         self.logger.info(f"Starting ingest for query: {query}")
 
         # Determine sources to use
@@ -479,6 +482,21 @@ class IngestDriver:
         # Integration with reflection cycle
         if self.config["integration"]["reflection_cycle_enabled"]:
             self._update_reflection_cycle(result)
+
+        # Update OMAi ledger if integration is enabled
+        if self.config["integration"]["omai_enabled"]:
+            update_omai_ledger(result.__dict__)
+
+        # Log WEAN telemetry if integration is enabled
+        if self.config["integration"]["wean_telemetry"]:
+            log_wean(
+                route="ingest_driver.ingest",
+                provider="spiral_codex",
+                task="content_ingestion",
+                approx_lines=result.successful_ingests,
+                start_ns=start_time_ns,
+                ok=result.successful_ingests > 0
+            )
 
         return result
 
