@@ -1,0 +1,51 @@
+# Spiral Codex Unified - Docker Compose
+# Usage: docker compose up -d
+
+version: '3.8'
+
+services:
+  spiral-codex-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: spiral-codex:latest
+    container_name: spiral-codex-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - LOG_LEVEL=INFO
+      - API_PORT=8000
+    volumes:
+      - ./codex_root/brain:/app/codex_root/brain
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - spiral-network
+    labels:
+      - "com.spiral.service=api"
+      - "com.spiral.version=1.0.0"
+
+  # Optional: Add monitoring with Prometheus
+  # prometheus:
+  #   image: prom/prometheus:latest
+  #   container_name: spiral-prometheus
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+  #   networks:
+  #     - spiral-network
+
+networks:
+  spiral-network:
+    driver: bridge
+
+volumes:
+  brain-data:
+    driver: local
