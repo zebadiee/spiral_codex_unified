@@ -3,6 +3,8 @@
 
 from agents.agent_archivist import ArchivistAgent
 from agents.agent_vibe_keeper import VibeKeeper
+from agents.agent_codex import CodexAgent
+from agents.agent_claude import ClaudeAgent
 
 
 class AgentRegistry:
@@ -13,6 +15,8 @@ class AgentRegistry:
     def register_all(self):
         self._agents["ƒARCHIVIST"] = ArchivistAgent(self.mem)
         self._agents["ƒVIBE_KEEPER"] = VibeKeeper(self.mem)
+        self._agents["ƒCODEX"] = CodexAgent(self.mem)
+        self._agents["ƒCLAUDE"] = ClaudeAgent(self.mem)
 
     def get(self, name):
         return self._agents.get(name)

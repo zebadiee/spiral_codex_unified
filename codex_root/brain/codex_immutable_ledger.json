@@ -1,0 +1,54 @@
+[
+  {
+    "record_type": "glyph",
+    "record_id": "\u0192TEST0",
+    "hash": "e2e977a661f8275609bd59e7c92c28b457e5e264697acb63cc7f2eed6325de2c",
+    "timestamp": "2025-05-08T09:56:10.233268Z",
+    "ledger_protocol": "SHA-256 integrity log (test entry)"
+  },
+  {
+    "record_type": "glyph",
+    "record_id": "\u0192TEST1",
+    "hash": "789b2558e1a640a694d3ef9c8d92f433e3cb2501b7233cfdde6a73ef5af49058",
+    "timestamp": "2025-05-08T09:56:10.233294Z",
+    "ledger_protocol": "SHA-256 integrity log (test entry)"
+  },
+  {
+    "record_type": "glyph",
+    "record_id": "\u0192TEST2",
+    "hash": "3ec210bde27fa020c0f9e4b2958b5fa098d1149c2568eab1a7e553f49bb1408f",
+    "timestamp": "2025-05-08T09:56:10.233310Z",
+    "ledger_protocol": "SHA-256 integrity log (test entry)"
+  },
+  {
+    "record_type": "glyph",
+    "record_id": "\u0192TEST3",
+    "hash": "535cec145a87e2431e42659b041419b2b5e3b729e4d5af13fa09739ce89bece3",
+    "timestamp": "2025-05-08T09:56:10.233325Z",
+    "ledger_protocol": "SHA-256 integrity log (test entry)"
+  },
+  {
+    "record_type": "glyph",
+    "record_id": "\u0192THOUGHT_4",
+    "hash": "1cb630a745d373a84ce95310fc4c4c33085745ed0c669684a176e9ca150c0c98",
+    "chain_hash": "6f09646290b7b74a58f366112d7fe1eaf569e301e9d658d0fbe272c86b5a0279",
+    "timestamp": "2025-05-08T10:23:44.116032Z",
+    "ledger_protocol": "SHA-256 integrity log (decision trace)"
+  },
+  {
+    "record_type": "glyph",
+    "record_id": "\u0192THOUGHT_5",
+    "hash": "cf3e010f80b6a832f7abef3fe9b1ab0bb210862e5fe24e31ba2b252ef33dd892",
+    "chain_hash": "166518cc0a77a388cff605a04ee8325ffc62b6425604d450931cb261750fd487",
+    "timestamp": "2025-05-08T10:33:12.431924Z",
+    "ledger_protocol": "SHA-256 integrity log (thought replay)"
+  },
+  {
+    "record_type": "glyph",
+    "record_id": "\u0192THOUGHT_6",
+    "hash": "5bba59ca58243bc7aa4b1e0c58bcbcc1f812b330055a942878d2b91aa1c79763",
+    "chain_hash": "cc3c47c58aa5fe5cfdc987376e72c2d80f63a212f034ef22cec424816d17c584",
+    "timestamp": "2025-05-08T10:33:12.431950Z",
+    "ledger_protocol": "SHA-256 integrity log (thought replay)"
+  }
+]

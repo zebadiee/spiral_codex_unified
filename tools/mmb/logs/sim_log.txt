@@ -1,0 +1,4 @@
+t=0:00 Eidolon spawned at x=0, y=65, z=0
+t=5:00 Kaelen built stone wall around well
+t=10:00 Tharok received dream fragment: 'burn it all to survive'
+t=12:00 Veyra wrote sign: 'The Heart lies!'

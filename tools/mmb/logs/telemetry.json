@@ -1,0 +1,6 @@
+[
+  { "action": "eidolon_spawn", "agent": "Eidolon", "source": "Heart dream" },
+  { "action": "dream_injection", "agent": "Tharok", "fragment": "burn it all to survive", "source": "Eidolon" },
+  { "action": "sign_written", "agent": "Veyra", "text": "The Heart lies!" },
+  { "action": "village_mood_shift", "mood": 0.2, "trigger": "Veyra_attacked_golem" }
+]
