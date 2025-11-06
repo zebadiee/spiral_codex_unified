@@ -1,4 +1,4 @@
-.PHONY: help venv install run test-ledger ingest telemetry-tail telemetry-test test-rag lessons health reflect digest mcp-spiral mcp-client mcp-setup
+.PHONY: help venv install run test-ledger ingest telemetry-tail telemetry-test test-rag lessons health reflect digest mcp-spiral mcp-client mcp-setup priority-content
 
 PYTHON := python3
 VENV := .venv
@@ -87,3 +87,14 @@ mcp-setup:
 	@echo "  - id: omai" >> ~/.config/mcp/servers.yaml
 	@echo "    url: http://127.0.0.1:7018" >> ~/.config/mcp/servers.yaml
 	@echo "✅ MCP config created at ~/.config/mcp/servers.yaml"
+
+priority-content:
+	@echo "🎯 Managing priority educational content (ManuAGI, etc.)"
+	@$(BIN)/python tools/priority_content_manager.py fetch-manuagi --max-videos 3
+	@$(BIN)/python tools/priority_content_manager.py prioritize-vault
+	@$(BIN)/python tools/priority_content_manager.py dashboard
+	@echo "✅ Priority content processed and dashboard created"
+
+web-dashboard:
+@echo "🌐 Starting Omarchy Web CLI on http://localhost:8010"
+@$(BIN)/python api/web_dashboard.py

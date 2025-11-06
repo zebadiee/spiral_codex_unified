@@ -112,3 +112,65 @@ export ACCENT=magenta  # or: cyan, blue, green, yellow
 Scripts installed in `~/bin/`:
 - `spiral-splash` - Full Omarchy splash screen
 - `spiral-pulse` - Quick 10s status check
+
+---
+
+## 🎓 MIT License Research Compliance
+
+### Priority Content System
+ManuAGI and MIT-licensed educational content receives **3.0x priority multiplier**:
+
+```bash
+# Fetch ManuAGI content (highest priority)
+python tools/priority_content_manager.py fetch-manuagi --max-videos 10
+
+# Check priority scores
+python -c "from utils.priority_sources import priority_manager; \
+  print(priority_manager.calculate_priority_score('https://github.com/ManuAGI/project'))"
+```
+
+### Research Framework
+- **Tier 1 (3.0x)**: MIT-licensed open source (ManuAGI, GitHub educational)
+- **Tier 2 (2.5x)**: Academic research (ArXiv, peer-reviewed)
+- **Tier 3 (2.0x)**: Open educational resources (Creative Commons)
+
+### Compliance Documentation
+See `docs/MIT_LICENSE_RESEARCH_COMPLIANCE.md` for:
+- Bona fide research methodology
+- Fair use analysis
+- Privacy protection measures
+- Ethical guidelines
+
+### Priority Sources
+Current top-tier sources:
+- ManuAGI (open-source AI tools)
+- MIT OpenCourseWare
+- GitHub educational repositories
+- ArXiv research papers
+
+---
+
+## 🌐 Omarchy Web CLI Dashboard
+
+### Launch Web Interface
+Browser-based real-time status dashboard on port 8010:
+```bash
+make web-dashboard
+# or
+python api/web_dashboard.py
+```
+
+Then visit: **http://localhost:8010**
+
+### Features
+- 📊 **Live System Health**: Spiral + OMAi status with color indicators
+- ⚡ **Local Usage Bar**: Real-time visualization of local vs cloud usage
+- 💬 **Ledger Stream**: Latest conversation entries
+- ⏰ **Timer Status**: Nightly automation schedule
+- 🎓 **MIT Priority**: Research compliance scores
+
+### WebSocket Updates
+Dashboard auto-updates every 5 seconds via WebSocket connection.
+
+### Omarchy Aesthetic
+Full gradient styling, terminal-inspired UI, research-grade presentation.
