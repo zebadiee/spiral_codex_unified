@@ -117,7 +117,13 @@ class LocalLLMBridge:
                         json=payload
                     ) as response:
                         if response.status == 200:
-                            result = await response.json()
+                            # Handle ndjson response
+                            content = await response.text()
+                            result = {}
+                            for line in content.strip().split('\n'):
+                                if line:
+                                    chunk = json.loads(line)
+                                    result = chunk
                             return result.get("response", "")
                         else:
                             raise RuntimeError(f"LLM API error: {response.status}")
@@ -178,7 +184,13 @@ class LocalLLMBridge:
                     json=payload
                 ) as response:
                     if response.status == 200:
-                        result = await response.json()
+                        # Handle ndjson response
+                        content = await response.text()
+                        result = {}
+                        for line in content.strip().split('\n'):
+                            if line:
+                                chunk = json.loads(line)
+                                result = chunk
                         return result.get("message", {}).get("content", "")
                     else:
                         raise RuntimeError(f"Chat API error: {response.status}")

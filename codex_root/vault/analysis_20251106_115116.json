@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-11-06T11:51:16.916202",
+  "query": "Test spiral codex integration",
+  "analysis": {
+    "query": "Test spiral codex integration",
+    "context_type": "test",
+    "depth": "shallow",
+    "insights": [
+      "Vault analysis for: Test spiral codex integration",
+      "Context patterns identified",
+      "Knowledge connections mapped"
+    ],
+    "confidence": 0.85,
+    "related_concepts": [
+      "spiral_codex",
+      "multi_agent",
+      "glyph_system"
+    ]
+  }
+}
