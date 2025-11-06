@@ -5,20 +5,41 @@ omai_ingest.py
 Utility for collecting project knowledge artifacts for OMAi components.
 Skips any file that is tagged with ``#private`` so sensitive material
 is not surfaced during ingestion runs.
+
+Enhanced privacy filtering:
+- Frontmatter: private: true
+- Tags: #private, #secret, #draft (configurable via OMAI_IGNORE_TAGS)
+- Paths: .private/, _private/, /Private/ (configurable via OMAI_IGNORE_PATHS)
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple, Set
 
 
 DEFAULT_SOURCE = Path("codex_root/vault")
 DEFAULT_OUTPUT = Path("codex_root/ingest_cache.json")
 DEFAULT_EXTENSIONS = {".md", ".markdown", ".txt", ".json", ".yaml"}
+
+# Privacy configuration from environment
+IGNORE_TAGS = {
+    t.strip().lower()
+    for t in os.getenv("OMAI_IGNORE_TAGS", "private,secret,draft").split(",")
+    if t.strip()
+}
+IGNORE_PATHS = [
+    p.strip()
+    for p in os.getenv("OMAI_IGNORE_PATHS", ".trash,.private,_private,/Private/,/Archive/_ignore").split(",")
+    if p.strip()
+]
+
+FRONTMATTER_RE = re.compile(r'^---\n(.*?)\n---\n', re.DOTALL)
 
 
 @dataclass
@@ -30,7 +51,7 @@ class IngestResult:
 
 
 class OMAiIngestor:
-    """Collects text artifacts while respecting #private tags."""
+    """Collects text artifacts while respecting #private tags and other privacy markers."""
 
     def __init__(
         self,
@@ -38,10 +59,14 @@ class OMAiIngestor:
         *,
         ignore_tag: str = "#private",
         extensions: Optional[Iterable[str]] = None,
+        ignore_tags: Optional[Set[str]] = None,
+        ignore_paths: Optional[List[str]] = None,
     ) -> None:
         self.source = source
         self.ignore_tag = ignore_tag.lower()
         self.extensions = {ext.lower() for ext in (extensions or DEFAULT_EXTENSIONS)}
+        self.ignore_tags = ignore_tags or IGNORE_TAGS
+        self.ignore_paths = ignore_paths or IGNORE_PATHS
 
     def ingest(self) -> IngestResult:
         """Traverse the source directory and capture eligible files."""
@@ -82,24 +107,84 @@ class OMAiIngestor:
         return path.suffix.lower() in self.extensions
 
     def _is_private(self, path: Path) -> bool:
+        """Check if file should be skipped due to privacy markers."""
+        # 1. Check path patterns (fastest check first)
+        if self._looks_private_path(str(path)):
+            return True
+        
+        # 2. Check filename for basic tag
         tag = self.ignore_tag
         tag_plain = tag.replace("#", "")
-
         name_lower = path.name.lower()
         if tag in name_lower or tag_plain in name_lower:
             return True
 
+        # 3. Check file content for privacy markers
         try:
-            with path.open("r", encoding="utf-8") as handle:
-                for line in handle:
-                    if tag in line.lower():
-                        return True
+            content = path.read_text(encoding="utf-8")
+            
+            # Check frontmatter for private: true
+            if self._has_private_frontmatter(content):
+                return True
+            
+            # Check for privacy tags in content
+            content_lower = content.lower()
+            if tag in content_lower:
+                return True
+            
+            # Check for additional ignore tags
+            for ignore_tag in self.ignore_tags:
+                if f"#{ignore_tag}" in content_lower:
+                    return True
+                    
         except UnicodeDecodeError:
             # If a file cannot be decoded as UTF-8, treat it as private and skip.
             return True
         except OSError:
             return True
 
+        return False
+    
+    def _looks_private_path(self, path_str: str) -> bool:
+        """Check if path matches privacy patterns."""
+        lower = path_str.lower()
+        
+        # Check directory markers
+        for pattern in ["/.trash/", "/.private/", "/_private/", "/private/"]:
+            if pattern in lower:
+                return True
+        
+        # Check filename prefix
+        name = Path(path_str).name.lower()
+        if name.startswith("_") and name != "_index.md":  # Allow _index.md
+            return True
+        
+        # Check custom ignore patterns
+        for pattern in self.ignore_paths:
+            if pattern and pattern.lower() in lower:
+                return True
+        
+        return False
+    
+    def _has_private_frontmatter(self, content: str) -> bool:
+        """Check YAML frontmatter for private: true."""
+        match = FRONTMATTER_RE.match(content)
+        if not match:
+            return False
+        
+        try:
+            # Simple parser - look for "private: true" line
+            fm_text = match.group(1).lower()
+            if "private:" in fm_text:
+                # Check if value is truthy
+                for line in fm_text.split("\n"):
+                    if line.strip().startswith("private:"):
+                        value = line.split(":", 1)[1].strip()
+                        if value in ["true", "yes", "1"]:
+                            return True
+        except Exception:
+            pass
+        
         return False
 
     def _read_text(self, path: Path) -> Optional[str]:
