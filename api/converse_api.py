@@ -381,6 +381,55 @@ async def add_message(req: ConversationRequest):
         raise HTTPException(status_code=400, detail=result["error"])
     return result
 
+@router.post("/run", response_model=ConversationResponse)
+async def run_conversation(req: ConversationRequest):
+    """Process a conversation turn and return session state"""
+    session = conversation_manager.get_conversation(req.session_id)
+
+    if not session:
+        creation = conversation_manager.create_session(req.session_id, req.participants)
+        if "error" in creation:
+            raise HTTPException(status_code=400, detail=creation["error"])
+        session = conversation_manager.get_conversation(req.session_id)
+
+    sender = req.context.get("sender") if req.context else None
+    if not sender:
+        sender = req.participants[0] if req.participants else "user"
+
+    message_type = req.context.get("message_type", "text") if req.context else "text"
+    metadata = req.context.get("metadata", {}) if req.context else {}
+
+    message = AgentMessage(
+        agent_id=sender,
+        content=req.message,
+        message_type=message_type,
+        metadata=metadata
+    )
+
+    result = conversation_manager.add_message(req.session_id, message)
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+
+    session = conversation_manager.get_conversation(req.session_id)
+    messages = [
+        AgentMessage(
+            agent_id=msg["agent_id"],
+            content=msg["content"],
+            message_type=msg.get("message_type", "text"),
+            metadata={**(msg.get("metadata") or {}), "timestamp": msg.get("timestamp")}
+        )
+        for msg in session.get("messages", [])
+    ]
+
+    response = ConversationResponse(
+        session_id=session["session_id"],
+        messages=messages,
+        participants=[participant["id"] for participant in session.get("participants", [])],
+        coherence_score=session.get("coherence_score", 1.0),
+        next_action=req.context.get("next_action") if req.context else None
+    )
+    return response
+
 @router.get("/session/{session_id}")
 async def get_session(session_id: str):
     """Get conversation session details"""

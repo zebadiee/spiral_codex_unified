@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  spiral-codex-api:
+    environment:
+      - LOCAL_LLM_ENDPOINT=http://ollama:11434
+      - FORCE_PROVIDER=${FORCE_PROVIDER:-}
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - spiral-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: spiral-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    volumes:
+      - ./ollama:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - spiral-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: ["gpu"]
+              count: all
+
+networks:
+  spiral-network:
+    external: false
+
+volumes:
+  ollama:
+    driver: local
