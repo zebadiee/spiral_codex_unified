@@ -15,3 +15,4 @@ ts,route,provider,task,approx_lines,latency_ms,ok
 2025-11-06T13:37:31Z,omai_bridge.query,omai,context_query,0,2,0
 2025-11-06T13:37:31Z,omai_bridge.query,omai,context_query,0,2,0
 2025-11-06T16:55:35Z,omai_bridge.query,omai,context_query,4,2,1
+2025-11-06T17:56:37Z,brain.plan,rag,planning,2,1,0

@@ -1,0 +1,10 @@
+[Unit]
+Description=Reindex OMAi Vault nightly at 23:45 (before Spiral reflection)
+
+[Timer]
+OnCalendar=daily
+OnCalendar=*-*-* 23:45:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

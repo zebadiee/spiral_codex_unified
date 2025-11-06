@@ -1,0 +1,10 @@
+[Unit]
+Description=OMAi Vault Nightly Reindex
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/Documents/omarchy-ai-assist
+ExecStart=/usr/bin/curl -fsS -X POST http://localhost:7016/api/context/reindex
+StandardOutput=append:%h/Documents/spiral_codex_unified/logs/omai_reindex.log
+StandardError=append:%h/Documents/spiral_codex_unified/logs/omai_reindex.log

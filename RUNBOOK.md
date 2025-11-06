@@ -30,3 +30,45 @@
 ## Notes
 - Respect privacy filters (#private, frontmatter private: true)
 - Provenance required for external content
+
+---
+
+## 🧠 Learning Infrastructure
+
+### Automated Data Collection
+Every fetch/ingest attempt is logged to `logs/ingest_trials.jsonl` for training:
+```bash
+# View recent trials
+tail -20 logs/ingest_trials.jsonl | jq '.url, .status, .error'
+
+# Analyze failure patterns
+jq 'select(.status == "failed")' logs/ingest_trials.jsonl | jq -s 'group_by(.error) | map({error: .[0].error, count: length})'
+```
+
+### Nightly Vault Reindex
+OMAi vault auto-reindexes at **23:45** daily (before Spiral's midnight reflection):
+```bash
+# Check timer status
+systemctl --user list-timers | grep omai-reindex
+
+# Manual trigger
+systemctl --user start spiral-omai-reindex.service
+
+# View reindex logs
+tail -50 logs/omai_reindex.log
+```
+
+### Training Workflow
+1. **Collect** - Fetchers auto-log trials to `ingest_trials.jsonl`
+2. **Reflect** - Midnight reflection analyzes patterns in `data/reflections/`
+3. **Improve** - Failure classifier learns from `ok=0` entries in `wean.csv`
+4. **Optimize** - WEAN telemetry tracks provider performance over time
+
+### Custom Fetcher Integration
+```python
+from fetchers.base_with_logging import LoggingFetcher
+
+fetcher = LoggingFetcher(timeout=15)
+result = fetcher.fetch("https://example.com", provenance="my_workflow")
+# Automatically logs to ingest_trials.jsonl
+```
