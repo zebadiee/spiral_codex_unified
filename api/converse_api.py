@@ -488,3 +488,82 @@ async def get_converse_status():
         "available_agents": len(MultiAgentRegistry().agents),
         "timestamp": datetime.utcnow().isoformat()
     }
+
+# --- Simple Spiral ↔ OMAi Conversation (Ledger-enabled) -------------------
+
+from fastapi import Query
+from typing import List
+from api.chat_schemas import Message
+from api.brain_api import brain_chat
+from api.omai_api import omai_chat
+from utils.ledger import append as ledger_append
+
+@router.post("/spiral-omai-chat")
+async def spiral_omai_conversation(
+    seed: str = Query(default="Plan weekly review from vault signals", description="Initial user message"),
+    turns: int = Query(default=4, ge=1, le=20, description="Number of conversation turns"),
+    session_id: str = Query(default=None, description="Optional ledger session id"),
+):
+    """
+    Alternates Spiral -> OMAi -> Spiral ...; logs each turn to ledger/conversations/<session>.jsonl
+    
+    Returns full transcript and ledger path.
+    """
+    sid = session_id or f"conv_{seed.replace(' ', '_')[:40]}"
+    msgs: List[Message] = [Message(role="user", content=seed, meta={"agent":"user"})]
+    speaker = "spiral"
+
+    # Log the seed
+    ledger_append({
+        "agent": "user",
+        "role": "user",
+        "content": seed,
+        "kind": "seed"
+    }, session_id=sid)
+
+    for i in range(turns):
+        if speaker == "spiral":
+            # Brain chat expects agent, messages, max_tokens, temperature
+            res = brain_chat(type("R", (), {
+                "agent": "spiral",
+                "messages": msgs,
+                "max_tokens": 512,
+                "temperature": 0.2
+            })())
+            reply = res.reply
+            reply.meta = {"agent": "spiral"}
+            msgs.append(reply)
+            ledger_append({
+                "agent": "spiral",
+                "role": "assistant",
+                "content": reply.content,
+                "turn": i + 1,
+                "kind": "reply"
+            }, session_id=sid)
+            speaker = "omai"
+        else:
+            res = omai_chat(type("R", (), {
+                "agent": "omai",
+                "messages": msgs,
+                "max_tokens": 512,
+                "temperature": 0.2
+            })())
+            reply = res.reply
+            reply.meta = {"agent": "omai"}
+            msgs.append(reply)
+            ledger_append({
+                "agent": "omai",
+                "role": "assistant",
+                "content": reply.content,
+                "turn": i + 1,
+                "kind": "reply"
+            }, session_id=sid)
+            speaker = "spiral"
+
+    return {
+        "turns": turns,
+        "seed": seed,
+        "session_id": sid,
+        "transcript": [m.dict() for m in msgs],
+        "ledger_file": f"ledger/conversations/{sid}.jsonl",
+    }
