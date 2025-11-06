@@ -1,0 +1,10 @@
+ts,route,provider,task,approx_lines,latency_ms,ok
+2025-11-06T12:19:46Z,orchestrator.route_task,codex,code_generation,50,0,1
+2025-11-06T12:19:46Z,orchestrator.route_task,claude,analysis,100,0,1
+2025-11-06T12:19:46Z,orchestrator.route_task,vibekeeper,entropy,20,0,1
+2025-11-06T12:19:46Z,orchestrator.route_task,archivist,archive,10,0,0
+2025-11-06T12:19:48Z,orchestrator.route_task,codex,code_generation,0,0,1
+2025-11-06T12:19:48Z,orchestrator.route_task,claude,analysis,0,0,1
+2025-11-06T12:19:48Z,orchestrator.route_task,claude,planning,0,0,1
+2025-11-06T12:19:48Z,orchestrator.route_task,codex,code_generation,0,0,1
+2025-11-06T12:19:48Z,orchestrator.route_task,vibekeeper,entropy,0,0,1

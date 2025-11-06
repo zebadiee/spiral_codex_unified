@@ -3,6 +3,8 @@
 
 from agents.agent_registry import AgentRegistry
 from typing import Dict, Any
+import time
+from utils.telemetry import log_wean
 
 
 class AgentOrchestrator:
@@ -37,29 +39,60 @@ class AgentOrchestrator:
         - archival -> Archivist
         """
         task_type = task.get("task_type", "")
+        approx_lines = task.get("approx_lines", 0)
         
-        # Code-related tasks to Codex
-        if any(x in task_type for x in ["code", "debug", "refactor", "implement"]):
-            agent = self.active_agents.get("ƒCODEX")
-            return agent.handle(task) if agent else {"error": "Codex not available"}
+        # Start telemetry timer
+        t0 = time.time_ns()
+        ok = False
+        provider = None
         
-        # Strategic/analytical tasks to Claude
-        elif any(x in task_type for x in ["analysis", "planning", "documentation", "review", "reasoning"]):
-            agent = self.active_agents.get("ƒCLAUDE")
-            return agent.handle(task) if agent else {"error": "Claude not available"}
-        
-        # Entropy monitoring to VibeKeeper
-        elif "entropy" in task_type or "vibe" in task_type:
-            agent = self.active_agents.get("ƒVIBE_KEEPER")
-            return agent.handle(task) if agent else {"error": "VibeKeeper not available"}
-        
-        # Archival tasks to Archivist
-        elif "archive" in task_type or "store" in task_type:
-            agent = self.active_agents.get("ƒARCHIVIST")
-            return agent.handle(task) if agent else {"error": "Archivist not available"}
-        
-        else:
-            return {"error": "Unknown task type", "task": task}
+        try:
+            # Code-related tasks to Codex
+            if any(x in task_type for x in ["code", "debug", "refactor", "implement"]):
+                agent = self.active_agents.get("ƒCODEX")
+                provider = "codex"
+                result = agent.handle(task) if agent else {"error": "Codex not available"}
+                ok = agent is not None and "error" not in result
+                return result
+            
+            # Strategic/analytical tasks to Claude
+            elif any(x in task_type for x in ["analysis", "planning", "documentation", "review", "reasoning"]):
+                agent = self.active_agents.get("ƒCLAUDE")
+                provider = "claude"
+                result = agent.handle(task) if agent else {"error": "Claude not available"}
+                ok = agent is not None and "error" not in result
+                return result
+            
+            # Entropy monitoring to VibeKeeper
+            elif "entropy" in task_type or "vibe" in task_type:
+                agent = self.active_agents.get("ƒVIBE_KEEPER")
+                provider = "vibekeeper"
+                result = agent.handle(task) if agent else {"error": "VibeKeeper not available"}
+                ok = agent is not None and "error" not in result
+                return result
+            
+            # Archival tasks to Archivist
+            elif "archive" in task_type or "store" in task_type:
+                agent = self.active_agents.get("ƒARCHIVIST")
+                provider = "archivist"
+                result = agent.handle(task) if agent else {"error": "Archivist not available"}
+                ok = agent is not None and "error" not in result
+                return result
+            
+            else:
+                provider = "none"
+                ok = False
+                return {"error": "Unknown task type", "task": task}
+        finally:
+            # Log telemetry
+            log_wean(
+                route="orchestrator.route_task",
+                provider=provider or "unknown",
+                task=task_type,
+                approx_lines=approx_lines,
+                start_ns=t0,
+                ok=ok
+            )
 
     def collaborate(self, task: Dict[str, Any]) -> Dict[str, Any]:
         """
