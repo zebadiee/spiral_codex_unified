@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+cd ~/Documents/spiral_codex_unified || exit 1
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "— Pulse — $(date '+%Y-%m-%d %H:%M:%S')"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "Spiral:"; curl -s http://localhost:8000/health | jq -c '{status, ok, version}'
+echo "OMAi  :" ; curl -s http://localhost:7016/health | jq -c '{service, port, ok}'
+echo "Wean  :" ; tail -n1 logs/wean.csv 2>/dev/null || echo "no rows"
+last_ref=$(ls -1t data/reflections/*.jsonl 2>/dev/null | head -1 || true)
+[ -n "$last_ref" ] && echo "Reflect:" && jq '.[0] | {ts, insights: (.insights|length), vault_enriched: (.insights[0].vault_refs|length // 0)}' "$last_ref" 2>/dev/null || echo "Reflect: no data yet"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

@@ -72,3 +72,43 @@ fetcher = LoggingFetcher(timeout=15)
 result = fetcher.fetch("https://example.com", provenance="my_workflow")
 # Automatically logs to ingest_trials.jsonl
 ```
+
+---
+
+## 🎨 Omarchy Splash & CLI Tools
+
+### Spiral Splash Screen
+Every new terminal displays live system status:
+```bash
+# Auto-runs on terminal start (added to ~/.bashrc)
+spiral-splash
+```
+
+Displays:
+- ✅ Spiral API & OMAi health status
+- 📊 Local vs cloud usage bar (last 50 requests)
+- 🔄 Last provider used & latency
+- 💬 Last conversation reply
+- ⏰ Next scheduled timers
+
+### Quick Pulse Check
+10-second status snapshot:
+```bash
+spiral-pulse
+```
+
+Shows:
+- Service health (Spiral + OMAi)
+- Latest wean telemetry
+- Last reflection data
+
+### Customization
+Change splash color theme:
+```bash
+export ACCENT=magenta  # or: cyan, blue, green, yellow
+```
+
+### Installation
+Scripts installed in `~/bin/`:
+- `spiral-splash` - Full Omarchy splash screen
+- `spiral-pulse` - Quick 10s status check

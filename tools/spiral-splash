@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+# Spiral Codex 2025 — Omarchy splash (no daemons, no root required)
+# deps: bash, curl, jq, tput (optional), systemd --user (optional)
+
+set -euo pipefail
+
+# ------------ config ------------
+SPIRAL_URL="${SPIRAL_URL:-http://localhost:8000}"
+OMAI_URL="${OMAI_URL:-http://localhost:7016}"
+WEAN_CSV="${WEAN_CSV:-$HOME/Documents/spiral_codex_unified/logs/wean.csv}"
+LEDGER_DIR="${LEDGER_DIR:-$HOME/Documents/spiral_codex_unified/ledger/conversations}"
+TITLE="${TITLE:-SPIRAL CODEX 2025}"
+ACCENT="${ACCENT:-cyan}" # cyan|magenta|blue|green|yellow
+
+# ------------ tiny color helper ------------
+c() { case "${1:-}" in
+  reset) printf "\033[0m";;
+  bold) printf "\033[1m";;
+  dim)  printf "\033[2m";;
+  cyan) printf "\033[36m";;
+  magenta) printf "\033[35m";;
+  blue) printf "\033[34m";;
+  green) printf "\033[32m";;
+  yellow) printf "\033[33m";;
+  red) printf "\033[31m";;
+esac; }
+ACC() { c "$ACCENT"; }
+
+ok()   { printf "%b%s%b" "$(c green)" "OK" "$(c reset)"; }
+bad()  { printf "%b%s%b" "$(c red)"   "DOWN" "$(c reset)"; }
+warn() { printf "%b%s%b" "$(c yellow)" "WARN" "$(c reset)"; }
+
+# ------------ bars ------------
+bar() { # bar <percent> <width>
+  local p=${1:-0} w=${2:-20} f=$(( (p*w)/100 )) e=$(( w-f ))
+  printf "%b" "$(ACC)"; printf "▰%.0s" $(seq 1 $f); printf "%b" "$(c dim)"
+  printf "▱%.0s" $(seq 1 $e); printf "%b" "$(c reset)"
+}
+
+# ------------ probes ------------
+jget() { jq -r "$1" 2>/dev/null || true; }
+
+probe_spiral() {
+  local h; h=$(curl -fsS "$SPIRAL_URL/health" 2>/dev/null || true)
+  if [[ -n "$h" ]]; then
+    local ver ok; ok="OK"
+    ver=$(printf "%s" "$h" | jget '.version // "2.1.0"')
+    printf "%s|%s" "$ok" "$ver"
+  else
+    printf "DOWN|n/a"
+  fi
+}
+
+probe_omai() {
+  local h; h=$(curl -fsS "$OMAI_URL/health" 2>/dev/null || true)
+  if [[ -n "$h" ]]; then
+    local ok svc prt
+    ok=$(printf "%s" "$h" | jget '.ok') ; svc=$(printf "%s" "$h" | jget '.service')
+    prt=$(printf "%s" "$h" | jget '.port')
+    [[ "$ok" == "true" ]] && printf "OK|%s:%s" "$svc" "$prt" || printf "WARN|%s:%s" "$svc" "$prt"
+  else
+    printf "DOWN|n/a"
+  fi
+}
+
+last_wean() {
+  [[ -f "$WEAN_CSV" ]] || { echo "none"; return; }
+  tail -n1 "$WEAN_CSV" 2>/dev/null | awk -F',' '{printf "%s (%sms)", $3, $6}'
+}
+
+last_ledger_tail() {
+  [[ -d "$LEDGER_DIR" ]] || { echo "none"; return; }
+  local f; f=$(ls -1t "$LEDGER_DIR"/*.jsonl 2>/dev/null | head -1 || true)
+  [[ -n "$f" ]] || { echo "none"; return; }
+  tail -n1 "$f" | jq -r '.content[0:100]+"…" // "…"' 2>/dev/null || echo "…"
+}
+
+next_timer() {
+  if systemctl --user list-timers --all &>/dev/null; then
+    systemctl --user list-timers --all \
+      | grep -E 'spiral-reflect|omai-index' \
+      | awk '{$1=$1;print}' | sed 's/ \{1,\}/ | /g' | head -2
+  else
+    echo "timers: manual / not available"
+  fi
+}
+
+providers_score() {
+  [[ -f "$WEAN_CSV" ]] || { echo "local 0 | cloud 0"; return; }
+  tail -n50 "$WEAN_CSV" | awk -F',' '
+    /local/ {L++} /claude|deepseek|gemini/ {C++}
+    END{printf "local %d | cloud %d", L+0, C+0}'
+}
+
+percent_local() {
+  [[ -f "$WEAN_CSV" ]] || { echo 0; return; }
+  local L C; read -r _ L _ C <<<"$(providers_score | sed 's/[^0-9 ]//g')"
+  local total=$((L+C)); [[ $total -eq 0 ]] && echo 0 || echo $(( (L*100)/total ))
+}
+
+# ------------ draw ------------
+clear
+cols=$(tput cols 2>/dev/null || echo 120)
+line() { printf "%${cols}s\n" | tr ' ' '─'; }
+
+read -r S_OK S_VER <<<"$(probe_spiral | tr '|' ' ')"
+read -r O_OK O_TAG <<<"$(probe_omai | tr '|' ' ')"
+WEAN_LAST="$(last_wean)"
+LEDGER_LAST="$(last_ledger_tail)"
+LOCAL_PCT="$(percent_local)"
+
+printf "%b" "$(c dim)"; line; printf "%b" "$(c reset)"
+printf "  %b%s%b  %b%s%b\n" "$(ACC)" "⟢ $TITLE ⟣" "$(c reset)" "$(c dim)" "Omarchy Splash" "$(c reset)"
+printf "%b" "$(c dim)"; line; printf "%b" "$(c reset)"
+
+cat <<'ART'
+        ╔══════════════════════════════════════════════════════════════╗
+        ║   █▀ █▀█ █ █▀█ ▄▀█ █     █▀▀ █▀█ █▀▄ █▀▀ ▀▄▀   ᛰ ᛰ ᛰ ᛰ      ║
+        ║   ▄█ █▀▀ █ █▀▄ █▀█ █▄▄   █▄▄ █▄█ █▄▀ ██▄ █ █   ᛰ ᛰ ᛰ ᛰ      ║
+        ╚══════════════════════════════════════════════════════════════╝
+ART
+
+printf "   %-16s %s  " "Spiral API:" ; [[ "$S_OK" == "OK" ]] && ok || bad
+printf "  %b%s%b\n" "$(c dim)" " (ver: $S_VER)" "$(c reset)"
+printf "   %-16s %s  %b%s%b\n" "OMAi Context:"  "$( [[ "$O_OK" == "OK" ]] && ok || ([[ "$O_OK" == "WARN" ]] && warn || bad) )" "$(c dim)" " ($O_TAG)" "$(c reset)"
+printf "   %-16s %b" "Local Usage:" "$(bar "$LOCAL_PCT" 30)"; printf "%b  %s%%\n" "$(c reset)" "$LOCAL_PCT"
+printf "   %-16s %s\n" "Last Provider:" "$WEAN_LAST"
+printf "   %-16s %s\n" "Last Reply:"    "$LEDGER_LAST"
+printf "   %-16s\n"   "Timers:"
+while IFS= read -r l; do printf "     • %s\n" "$l"; done < <(next_timer)
+
+printf "%b" "$(c dim)"; line; printf "%b" "$(c reset)"
+
+cat <<'TIP'
+  tips:
+    • chat:    curl -X POST http://localhost:8000/v1/chat \
+                 -H 'content-type: application/json' \
+                 -d '{"message":"hello curator","vault_query":true}' | jq
+    • reflect: make -C ~/Documents/spiral_codex_unified reflect
+    • index:   curl -X POST http://localhost:7016/api/context/reindex | jq
+    • pulse:   spiral-pulse  (mini 10s status)
+
+TIP
+
+printf "%b" "$(c dim)"; line; printf "%b" "$(c reset)"
