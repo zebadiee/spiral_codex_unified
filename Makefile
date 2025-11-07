@@ -15,7 +15,7 @@ install:
 	$(BIN)/pip install -q -r requirements.txt
 
 run:
-	$(BIN)/uvicorn fastapi_app:app --reload --port $(PORT)
+	$(BIN)/python fastapi_app.py
 
 test-ledger:
 	@echo "Testing ledger sink..."
@@ -96,5 +96,5 @@ priority-content:
 	@echo "✅ Priority content processed and dashboard created"
 
 web-dashboard:
-@echo "🌐 Starting Omarchy Web CLI on http://localhost:8010"
-@$(BIN)/python api/web_dashboard.py
+	@echo "🌐 Starting Omarchy Web CLI on http://localhost:8010"
+	@$(BIN)/python api/web_dashboard.py

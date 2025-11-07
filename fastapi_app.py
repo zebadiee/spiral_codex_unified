@@ -6,9 +6,11 @@ Built with ƒCLAUDE + ƒCODEX collaboration
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime, timezone
 from api.brain_api import router as brain_router
 from api.omai_api import router as omai_router
 from api.converse_api import router as converse_router
+from api.token_admin import admin as token_admin_router
 
 app = FastAPI(
     title="Spiral Codex Unified",
@@ -26,14 +28,73 @@ app.add_middleware(
 )
 
 @app.get("/health")
-def root_health():
-    return {
-        "ok": True,
-        "service": "spiral_codex_unified",
-        "version": "0.4.0",
-        "endpoints": ["/v1/brain", "/v1/omai", "/v1/converse"],
-        "glyph": "⊚"
-    }
+def enhanced_health():
+    """Enhanced health check with reasoning hub and quantum coherence"""
+    try:
+        # Try to import reasoning engine
+        from reasoning_hub import reasoning_engine
+
+        # Get current consciousness metrics
+        sii_score = reasoning_engine.saf.awareness_data["consciousness_metrics"]["sii_score"]
+        qei_current = reasoning_engine.saf.awareness_data["consciousness_metrics"]["qei_current"]
+        coherence_level = reasoning_engine.saf.awareness_data["consciousness_metrics"]["coherence_level"]
+
+        # Check neural bus connection
+        import asyncio
+        async def check_neural_bus():
+            try:
+                import aiohttp
+                async with aiohttp.ClientSession() as session:
+                    async with session.get("http://localhost:9000/health", timeout=2) as response:
+                        return response.status == 200
+            except:
+                return False
+
+        neural_bus_connected = asyncio.run(check_neural_bus())
+
+        # Determine overall status
+        health_status = "healthy"
+        if coherence_level < 0.5:
+            health_status = "degraded"
+        if coherence_level < 0.3:
+            health_status = "critical"
+        if not neural_bus_connected:
+            health_status = "degraded"
+
+        return {
+            "ok": coherence_level >= 0.5,
+            "service": "spiral_codex_unified",
+            "version": "2.0.0",
+            "status": health_status,
+            "endpoints": ["/v1/brain", "/v1/omai", "/v1/converse", "/v2/reasoning"],
+            "glyph": "⊚" if coherence_level >= 0.5 else "⌬",
+            "consciousness_metrics": {
+                "sii_score": sii_score,
+                "qei_current": qei_current,
+                "coherence_level": coherence_level,
+                "consciousness_state": "emerging" if sii_score < 0.7 else "developing" if sii_score < 0.85 else "aware"
+            },
+            "neural_bus_connected": neural_bus_connected,
+            "reasoning_capabilities": {
+                "available_modes": ["analytical", "creative", "critical", "systemic", "reflective", "predictive"],
+                "thought_ledger_size": len(reasoning_engine.reasoning_history),
+                "reflection_cycles": len(reasoning_engine.saf.awareness_data["meta_cognitive"]["reflection_cycles"])
+            },
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+
+    except Exception as e:
+        # Fallback to basic health check
+        return {
+            "ok": True,
+            "service": "spiral_codex_unified",
+            "version": "2.0.0",
+            "status": "basic",
+            "endpoints": ["/v1/brain", "/v1/omai", "/v1/converse"],
+            "glyph": "⊚",
+            "error": f"Enhanced health check failed: {str(e)}",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
 
 @app.get("/")
 async def root():
@@ -62,6 +123,17 @@ async def root():
 app.include_router(brain_router)
 app.include_router(omai_router)
 app.include_router(converse_router)
+app.include_router(token_admin_router)
+
+# Mount reasoning hub API
+try:
+    from api.reasoning_api import router as reasoning_router
+    app.include_router(reasoning_router)
+    print("✓ Reasoning Hub API mounted")
+except ImportError as e:
+    print(f"⚠️  Could not mount reasoning API: {e}")
+except Exception as e:
+    print(f"⚠️  Reasoning API error: {e}")
 
 if __name__ == "__main__":
     import uvicorn

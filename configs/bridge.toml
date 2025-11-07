@@ -1,0 +1,5 @@
+[routes]
+chat    = "http://127.0.0.1:8000/v1/chat"
+plan    = "http://127.0.0.1:8000/v1/brain/plan"
+reflect = "http://127.0.0.1:8000/v1/reflect"
+vault   = "http://127.0.0.1:7016"

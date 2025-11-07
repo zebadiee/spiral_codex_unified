@@ -1,0 +1,1109 @@
+{
+  "metadata": {
+    "indexed_at": "2025-11-06T17:06:49.995856",
+    "processing_time_seconds": 0.001744,
+    "total_documents": 4,
+    "duplicates_found": 0,
+    "skipped_files": 1,
+    "source_directory": "codex_root/vault",
+    "extensions_supported": [
+      ".markdown",
+      ".yaml",
+      ".txt",
+      ".md",
+      ".json"
+    ],
+    "ingest_system": "spiral_codex_v1",
+    "credibility_scoring_enabled": true,
+    "last_updated": "2025-11-06T17:06:49.995856"
+  },
+  "credibility_distribution": {
+    "highly_credible": 0,
+    "credible": 1,
+    "moderate": 2,
+    "questionable": 1,
+    "high_bullshit_risk": 0
+  },
+  "source_statistics": {
+    "local": 4,
+    "reddit": 0,
+    "arxiv": 0,
+    "archive": 0,
+    "youtube": 0,
+    "pdf": 0
+  },
+  "documents": [
+    {
+      "title": "Analysis 20251106 115116",
+      "path": "analysis_20251106_115116.json",
+      "full_path": "codex_root/vault/analysis_20251106_115116.json",
+      "content": "{\n  \"timestamp\": \"2025-11-06T11:51:16.916202\",\n  \"query\": \"Test spiral codex integration\",\n  \"analysis\": {\n    \"query\": \"Test spiral codex integration\",\n    \"context_type\": \"test\",\n    \"depth\": \"shallow\",\n    \"insights\": [\n      \"Vault analysis for: Test spiral codex integration\",\n      \"Context patterns identified\",\n      \"Knowledge connections mapped\"\n    ],\n    \"confidence\": 0.85,\n    \"related_concepts\": [\n      \"spiral_codex\",\n      \"multi_agent\",\n      \"glyph_system\"\n    ]\n  }\n}",
+      "content_sha256": "443eb66de4fa6b292ef68902660cf8fd890dbef549bb56e160ca479846ac4bc8",
+      "sections": [],
+      "tables": [],
+      "weight": 1.0,
+      "tags": ["local", "analysis"],
+      "frontmatter": {},
+      "created_at": "2025-11-06T11:51:16.916446",
+      "modified_at": "2025-11-06T11:51:16.916446",
+      "word_count": 45,
+      "char_count": 488,
+      "is_private": false,
+      "source_type": "local",
+      "credibility_score": {
+        "overall_bullshit_score": 0.45,
+        "credibility_tier": "MODERATE",
+        "source_score": 0.3,
+        "quality_score": 0.4,
+        "consensus_score": 0.5,
+        "citation_score": 0.6,
+        "freshness_score": 0.2,
+        "confidence": 0.7
+      }
+    },
+    {
+      "title": "OMAi API Reference",
+      "path": "api-reference.md",
+      "full_path": "codex_root/vault/api-reference.md",
+      "content": "---\ntitle: \"OMAi API Reference\"\ntags: [api, reference, documentation]\ntype: reference\nweight: 1.3\n---\n\n# OMAi API Reference\n\n## Authentication\n\n### API Key Authentication\n```bash\ncurl -H \"Authorization: Bearer YOUR_API_KEY\" \\\n     https://api.omai.ai/v1/endpoint\n```\n\n### Session-based Authentication\n```python\nimport requests\n\nsession = requests.Session()\nsession.auth = ('username', 'password')\nresponse = session.post('https://api.omai.ai/v1/auth/login')\n```\n\n## Endpoints\n\n### Chat API\n\n#### POST /v1/chat/completions\nCreate a chat completion request.\n\n**Request Body:**\n```json\n{\n  \"model\": \"omai-gpt-4\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello, how are you?\"\n    }\n  ],\n  \"temperature\": 0.7,\n  \"max_tokens\": 1000\n}\n```\n\n**Response:**\n```json\n{\n  \"id\": \"chatcmpl-123\",\n  \"object\": \"chat.completion\",\n  \"created\": 1677652288,\n  \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\": \"assistant\",\n        \"content\": \"Hello! I'm doing well, thank you for asking.\"\n      },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 9,\n    \"completion_tokens\": 12,\n    \"total_tokens\": 21\n  }\n}\n```\n\n### Embeddings API\n\n#### POST /v1/embeddings\nGenerate embeddings for text input.\n\n**Request Body:**\n```json\n{\n  \"model\": \"text-embedding-ada-002\",\n  \"input\": \"The quick brown fox jumps over the lazy dog\"\n}\n```\n\n**Response:**\n```json\n{\n  \"object\": \"list\",\n  \"data\": [\n    {\n      \"object\": \"embedding\",\n      \"embedding\": [0.0023064255, -0.009327292, ...],\n      \"index\": 0\n    }\n  ],\n  \"model\": \"text-embedding-ada-002\",\n  \"usage\": {\n    \"prompt_tokens\": 9,\n    \"total_tokens\": 9\n  }\n}\n```\n\n## Error Codes\n\n| Code | Description | Solution |\n|------|-------------|----------|\n| 400 | Bad Request | Check request format |\n| 401 | Unauthorized | Verify API key |\n| 429 | Rate Limited | Implement backoff |\n| 500 | Server Error | Retry with exponential backoff |\n\n## Rate Limits\n\n| Tier | Requests per minute | Tokens per minute |\n|------|--------------------|-------------------|\n| Basic | 60 | 40,000 |\n| Pro | 3,000 | 2,000,000 |\n| Enterprise | Unlimited | Unlimited |\n\n## SDK Examples\n\n### Python\n```python\nfrom omai import OMAi\n\nclient = OMAi(api_key=\"your-api-key\")\n\nresponse = client.chat.completions.create(\n    model=\"omai-gpt-4\",\n    messages=[{\"role\": \"user\", \"content\": \"Hello!\"}]\n)\n\nprint(response.choices[0].message.content)\n```\n\n### JavaScript\n```javascript\nimport { OMAi } from 'omai';\n\nconst omai = new OMAi({ apiKey: 'your-api-key' });\n\nconst response = await omai.chat.completions.create({\n  model: 'omai-gpt-4',\n  messages: [{ role: 'user', content: 'Hello!' }],\n});\n\nconsole.log(response.choices[0].message.content);\n```",
+      "content_sha256": "df8db1c3f2a2205ab0fbb5068aa3a0114c8ac6b1ce404bf76389d314cbec03cd",
+      "sections": [
+        {
+          "type": "heading",
+          "title": "OMAi API Reference",
+          "level": 1,
+          "content": "# OMAi API Reference",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 1
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Authentication",
+          "level": 2,
+          "content": "## Authentication",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "API Key Authentication",
+          "level": 3,
+          "content": "### API Key Authentication",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Session-based Authentication",
+          "level": 3,
+          "content": "### Session-based Authentication",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Endpoints",
+          "level": 2,
+          "content": "## Endpoints",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Chat API",
+          "level": 3,
+          "content": "### Chat API",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "POST /v1/chat/completions",
+          "level": 4,
+          "content": "#### POST /v1/chat/completions",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 4
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Embeddings API",
+          "level": 3,
+          "content": "### Embeddings API",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "POST /v1/embeddings",
+          "level": 4,
+          "content": "#### POST /v1/embeddings",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 4
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Error Codes",
+          "level": 2,
+          "content": "## Error Codes",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Rate Limits",
+          "level": 2,
+          "content": "## Rate Limits",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "SDK Examples",
+          "level": 2,
+          "content": "## SDK Examples",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Python",
+          "level": 3,
+          "content": "### Python",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "JavaScript",
+          "level": 3,
+          "content": "### JavaScript",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "curl -H \"Authorization: Bearer YOUR_API_KEY\" \\\n     https://api.omai.ai/v1/endpoint",
+          "language": "bash",
+          "rows": 0,
+          "metadata": {
+            "language": "bash"
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "import requests\n\nsession = requests.Session()\nsession.auth = ('username', 'password')\nresponse = session.post('https://api.omai.ai/v1/auth/login')",
+          "language": "python",
+          "rows": 0,
+          "metadata": {
+            "language": "python"
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "{\n  \"model\": \"omai-gpt-4\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello, how are you?\"\n    }\n  ],\n  \"temperature\": 0.7,\n  \"max_tokens\": 1000\n}",
+          "language": "json",
+          "rows": 0,
+          "metadata": {
+            "language": "json"
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "{\n  \"id\": \"chatcmpl-123\",\n  \"object\": \"chat.completion\",\n  \"created\": 1677652288,\n  \"choices\": [\n    {\n      \"index\": 0,\n      \"message\": {\n        \"role\": \"assistant\",\n        \"content\": \"Hello! I'm doing well, thank you for asking.\"\n      },\n      \"finish_reason\": \"stop\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 9,\n    \"completion_tokens\": 12,\n    \"total_tokens\": 21\n  }\n}",
+          "language": "json",
+          "rows": 0,
+          "metadata": {
+            "language": "json"
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "{\n  \"model\": \"text-embedding-ada-002\",\n  \"input\": \"The quick brown fox jumps over the lazy dog\"\n}",
+          "language": "json",
+          "rows": 0,
+          "metadata": {
+            "language": "json"
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "{\n  \"object\": \"list\",\n  \"data\": [\n    {\n      \"object\": \"embedding\",\n      \"embedding\": [0.0023064255, -0.009327292, ...],\n      \"index\": 0\n    }\n  ],\n  \"model\": \"text-embedding-ada-002\",\n  \"usage\": {\n    \"prompt_tokens\": 9,\n    \"total_tokens\": 9\n  }\n}",
+          "language": "json",
+          "rows": 0,
+          "metadata": {
+            "language": "json"
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "from omai import OMAi\n\nclient = OMAi(api_key=\"your-api-key\")\n\nresponse = client.chat.completions.create(\n    model=\"omai-gpt-4\",\n    messages=[{\"role\": \"user\", \"content\": \"Hello!\"}]\n)\n\nprint(response.choices[0].message.content)",
+          "language": "python",
+          "rows": 0,
+          "metadata": {
+            "language": "python"
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "import { OMAi } from 'omai';\n\nconst omai = new OMAi({ apiKey: 'your-api-key' });\n\nconst response = await omai.chat.completions.create({\n  model: 'omai-gpt-4',\n  messages: [{ role: 'user', content: 'Hello!' }],\n});\n\nconsole.log(response.choices[0].message.content);",
+          "language": "javascript",
+          "rows": 0,
+          "metadata": {
+            "language": "javascript"
+          }
+        },
+        {
+          "type": "table",
+          "title": null,
+          "level": null,
+          "content": "| Code | Description | Solution |\n|------|-------------|----------|\n| 400 | Bad Request | Check request format |\n| 401 | Unauthorized | Verify API key |\n| 429 | Rate Limited | Implement backoff |\n| 500 | Server Error | Retry with exponential backoff |\n\n",
+          "language": null,
+          "rows": 4,
+          "metadata": {
+            "headers": [
+              "Code",
+              "Description",
+              "Solution"
+            ],
+            "rows": [
+              {
+                "Code": "400",
+                "Description": "Bad Request",
+                "Solution": "Check request format"
+              },
+              {
+                "Code": "401",
+                "Description": "Unauthorized",
+                "Solution": "Verify API key"
+              },
+              {
+                "Code": "429",
+                "Description": "Rate Limited",
+                "Solution": "Implement backoff"
+              },
+              {
+                "Code": "500",
+                "Description": "Server Error",
+                "Solution": "Retry with exponential backoff"
+              }
+            ],
+            "row_count": 4,
+            "column_count": 3
+          }
+        },
+        {
+          "type": "table",
+          "title": null,
+          "level": null,
+          "content": "| Tier | Requests per minute | Tokens per minute |\n|------|--------------------|-------------------|\n| Basic | 60 | 40,000 |\n| Pro | 3,000 | 2,000,000 |\n| Enterprise | Unlimited | Unlimited |\n\n",
+          "language": null,
+          "rows": 3,
+          "metadata": {
+            "headers": [
+              "Tier",
+              "Requests per minute",
+              "Tokens per minute"
+            ],
+            "rows": [
+              {
+                "Tier": "Basic",
+                "Requests per minute": "60",
+                "Tokens per minute": "40,000"
+              },
+              {
+                "Tier": "Pro",
+                "Requests per minute": "3,000",
+                "Tokens per minute": "2,000,000"
+              },
+              {
+                "Tier": "Enterprise",
+                "Requests per minute": "Unlimited",
+                "Tokens per minute": "Unlimited"
+              }
+            ],
+            "row_count": 3,
+            "column_count": 3
+          }
+        }
+      ],
+      "tables": [
+        {
+          "headers": [
+            "Code",
+            "Description",
+            "Solution"
+          ],
+          "rows": [
+            {
+              "Code": "400",
+              "Description": "Bad Request",
+              "Solution": "Check request format"
+            },
+            {
+              "Code": "401",
+              "Description": "Unauthorized",
+              "Solution": "Verify API key"
+            },
+            {
+              "Code": "429",
+              "Description": "Rate Limited",
+              "Solution": "Implement backoff"
+            },
+            {
+              "Code": "500",
+              "Description": "Server Error",
+              "Solution": "Retry with exponential backoff"
+            }
+          ],
+          "row_count": 4,
+          "column_count": 3
+        },
+        {
+          "headers": [
+            "Tier",
+            "Requests per minute",
+            "Tokens per minute"
+          ],
+          "rows": [
+            {
+              "Tier": "Basic",
+              "Requests per minute": "60",
+              "Tokens per minute": "40,000"
+            },
+            {
+              "Tier": "Pro",
+              "Requests per minute": "3,000",
+              "Tokens per minute": "2,000,000"
+            },
+            {
+              "Tier": "Enterprise",
+              "Requests per minute": "Unlimited",
+              "Tokens per minute": "Unlimited"
+            }
+          ],
+          "row_count": 3,
+          "column_count": 3
+        }
+      ],
+      "weight": 1.3,
+      "tags": [
+        "api",
+        "reference",
+        "documentation",
+        "local"
+      ],
+      "frontmatter": {
+        "title": "OMAi API Reference",
+        "tags": "[api, reference, documentation]",
+        "type": "reference",
+        "weight": "1.3"
+      },
+      "created_at": "2025-11-06T17:05:34.552373",
+      "modified_at": "2025-11-06T17:05:34.550448",
+      "word_count": 332,
+      "char_count": 2698,
+      "is_private": false,
+      "source_type": "local",
+      "credibility_score": {
+        "overall_bullshit_score": 0.25,
+        "credibility_tier": "CREDIBLE",
+        "source_score": 0.2,
+        "quality_score": 0.2,
+        "consensus_score": 0.3,
+        "citation_score": 0.3,
+        "freshness_score": 0.1,
+        "confidence": 0.8
+      }
+    },
+    {
+      "title": "System Backup Procedure",
+      "path": "backup-procedure.md",
+      "full_path": "codex_root/vault/backup-procedure.md",
+      "content": "---\ntitle: \"Backup Procedure\"\ntype: procedures\ntags: [backup, procedure, maintenance]\nweight: 1.8\nversion: \"1.0\"\nlast_updated: \"2025-11-06\"\n---\n\n# System Backup Procedure\n\n## Overview\nThis document outlines the standard procedure for performing system backups.\n\n## Backup Schedule\n\n| System | Frequency | Retention | Location |\n|--------|-----------|-----------|----------|\n| Database | Daily | 30 days | Secure storage |\n| Files | Weekly | 90 days | Cloud storage |\n| Configuration | Monthly | 1 year | Version control |\n\n## Steps\n\n### 1. Pre-Backup Checks\n- Verify system status\n- Check available storage space\n- Confirm backup window\n\n### 2. Execute Backup\n```bash\n# Example backup command\nbackup_tool --source /data --dest /backup/$(date +%Y%m%d)\n```\n\n### 3. Verification\n- Check backup integrity\n- Verify file counts\n- Test restore capability\n\n### 4. Documentation\n- Log backup results\n- Update backup inventory\n- Report any issues\n\n## Troubleshooting\n\n| Issue | Solution |\n|-------|----------|\n| Insufficient space | Clean up old backups |\n| Network timeout | Retry with increased timeout |\n| Permission denied | Check access rights |\n\n## Contacts\n- System Administrator: admin@company.com\n- Support Team: support@company.com",
+      "content_sha256": "e641fd8277bd9ee53fbe99d77d68ff7e64212162abb1ac87870edaa3f5503882",
+      "sections": [
+        {
+          "type": "heading",
+          "title": "System Backup Procedure",
+          "level": 1,
+          "content": "# System Backup Procedure",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 1
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Overview",
+          "level": 2,
+          "content": "## Overview",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Backup Schedule",
+          "level": 2,
+          "content": "## Backup Schedule",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Steps",
+          "level": 2,
+          "content": "## Steps",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "1. Pre-Backup Checks",
+          "level": 3,
+          "content": "### 1. Pre-Backup Checks",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "2. Execute Backup",
+          "level": 3,
+          "content": "### 2. Execute Backup",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Example backup command",
+          "level": 1,
+          "content": "# Example backup command",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 1
+          }
+        },
+        {
+          "type": "heading",
+          "title": "3. Verification",
+          "level": 3,
+          "content": "### 3. Verification",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "4. Documentation",
+          "level": 3,
+          "content": "### 4. Documentation",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Troubleshooting",
+          "level": 2,
+          "content": "## Troubleshooting",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Contacts",
+          "level": 2,
+          "content": "## Contacts",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "# Example backup command\nbackup_tool --source /data --dest /backup/$(date +%Y%m%d)",
+          "language": "bash",
+          "rows": 0,
+          "metadata": {
+            "language": "bash"
+          }
+        },
+        {
+          "type": "table",
+          "title": null,
+          "level": null,
+          "content": "| System | Frequency | Retention | Location |\n|--------|-----------|-----------|----------|\n| Database | Daily | 30 days | Secure storage |\n| Files | Weekly | 90 days | Cloud storage |\n| Configuration | Monthly | 1 year | Version control |\n\n",
+          "language": null,
+          "rows": 3,
+          "metadata": {
+            "headers": [
+              "System",
+              "Frequency",
+              "Retention",
+              "Location"
+            ],
+            "rows": [
+              {
+                "System": "Database",
+                "Frequency": "Daily",
+                "Retention": "30 days",
+                "Location": "Secure storage"
+              },
+              {
+                "System": "Files",
+                "Frequency": "Weekly",
+                "Retention": "90 days",
+                "Location": "Cloud storage"
+              },
+              {
+                "System": "Configuration",
+                "Frequency": "Monthly",
+                "Retention": "1 year",
+                "Location": "Version control"
+              }
+            ],
+            "row_count": 3,
+            "column_count": 4
+          }
+        },
+        {
+          "type": "table",
+          "title": null,
+          "level": null,
+          "content": "| Issue | Solution |\n|-------|----------|\n| Insufficient space | Clean up old backups |\n| Network timeout | Retry with increased timeout |\n| Permission denied | Check access rights |\n\n",
+          "language": null,
+          "rows": 3,
+          "metadata": {
+            "headers": [
+              "Issue",
+              "Solution"
+            ],
+            "rows": [
+              {
+                "Issue": "Insufficient space",
+                "Solution": "Clean up old backups"
+              },
+              {
+                "Issue": "Network timeout",
+                "Solution": "Retry with increased timeout"
+              },
+              {
+                "Issue": "Permission denied",
+                "Solution": "Check access rights"
+              }
+            ],
+            "row_count": 3,
+            "column_count": 2
+          }
+        }
+      ],
+      "tables": [
+        {
+          "headers": [
+            "System",
+            "Frequency",
+            "Retention",
+            "Location"
+          ],
+          "rows": [
+            {
+              "System": "Database",
+              "Frequency": "Daily",
+              "Retention": "30 days",
+              "Location": "Secure storage"
+            },
+            {
+              "System": "Files",
+              "Frequency": "Weekly",
+              "Retention": "90 days",
+              "Location": "Cloud storage"
+            },
+            {
+              "System": "Configuration",
+              "Frequency": "Monthly",
+              "Retention": "1 year",
+              "Location": "Version control"
+            }
+          ],
+          "row_count": 3,
+          "column_count": 4
+        },
+        {
+          "headers": [
+            "Issue",
+            "Solution"
+          ],
+          "rows": [
+            {
+              "Issue": "Insufficient space",
+              "Solution": "Clean up old backups"
+            },
+            {
+              "Issue": "Network timeout",
+              "Solution": "Retry with increased timeout"
+            },
+            {
+              "Issue": "Permission denied",
+              "Solution": "Check access rights"
+            }
+          ],
+          "row_count": 3,
+          "column_count": 2
+        }
+      ],
+      "weight": 1.8,
+      "tags": [
+        "backup",
+        "procedure",
+        "maintenance",
+        "local"
+      ],
+      "frontmatter": {
+        "title": "Backup Procedure",
+        "type": "procedures",
+        "tags": "[backup, procedure, maintenance]",
+        "weight": "1.8",
+        "version": "1.0",
+        "last_updated": "2025-11-06"
+      },
+      "created_at": "2025-11-06T17:06:47.282377",
+      "modified_at": "2025-11-06T17:06:47.280642",
+      "word_count": 188,
+      "char_count": 1231,
+      "is_private": false,
+      "source_type": "local",
+      "credibility_score": {
+        "overall_bullshit_score": 0.35,
+        "credibility_tier": "CREDIBLE",
+        "source_score": 0.2,
+        "quality_score": 0.3,
+        "consensus_score": 0.4,
+        "citation_score": 0.5,
+        "freshness_score": 0.1,
+        "confidence": 0.7
+      }
+    },
+    {
+      "title": "Model Training Session - 2025-11-06",
+      "path": "training-logs/model-training-session-2025-11-06.md",
+      "full_path": "codex_root/vault/training-logs/model-training-session-2025-11-06.md",
+      "content": "---\ntitle: \"Model Training Session - 2025-11-06\"\ndate: 2025-11-06\ntype: training-log\ntags: [training, model, llm, performance]\nweight: 2.0\n---\n\n# Model Training Session - 2025-11-06\n\n## Overview\nThis training session focused on improving the model's performance on code generation tasks and debugging capabilities.\n\n## Training Configuration\n\n| Parameter | Value | Notes |\n|-----------|-------|-------|\n| Model | gpt-4 | Base model |\n| Epochs | 10 | Standard training |\n| Batch Size | 32 | Optimized for memory |\n| Learning Rate | 0.001 | Adam optimizer |\n| Dataset Size | 50,000 samples | Code generation tasks |\n\n## Performance Metrics\n\n### Initial Performance\n```python\ninitial_metrics = {\n    \"accuracy\": 0.75,\n    \"f1_score\": 0.73,\n    \"bleu_score\": 0.68\n}\n```\n\n### Final Performance\n```python\nfinal_metrics = {\n    \"accuracy\": 0.89,\n    \"f1_score\": 0.87,\n    \"bleu_score\": 0.82\n}\n```\n\n## Training Issues Encountered\n\n### Memory Optimization\nThe initial batch size of 64 caused GPU memory issues. Reduced to 32 and implemented gradient checkpointing.\n\n### Data Quality Issues\n- Found 15% duplicate samples in training data\n- Implemented deduplication pipeline\n- Improved data cleaning procedures\n\n## Code Changes Made\n\n### Model Architecture Updates\n```python\nclass EnhancedCodeModel(nn.Module):\n    def __init__(self, vocab_size, d_model=512):\n        super().__init__()\n        self.transformer = nn.TransformerEncoder(\n            nn.TransformerEncoderLayer(d_model, nhead=8),\n            num_layers=6\n        )\n        self.code_specific_attention = CodeAttentionLayer(d_model)\n```\n\n### Training Loop Improvements\n```python\ndef enhanced_training_step(model, batch):\n    # Gradient clipping to prevent exploding gradients\n    torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)\n\n    # Learning rate scheduling\n    scheduler.step()\n\n    # Custom loss function for code tasks\n    loss = code_specific_loss(model_output, target)\n    return loss\n```\n\n## Results Analysis\n\nThe training session showed significant improvements in:\n1. Code generation accuracy (13% improvement)\n2. Debugging capability (15% improvement)\n3. Documentation generation (18% improvement)\n\n## Next Steps\n\n1. Schedule hyperparameter tuning session\n2. Expand dataset with more diverse code examples\n3. Implement ensemble training approach\n\n## Lessons Learned\n\n- Smaller batch sizes can improve convergence for code models\n- Data quality has outsized impact on model performance\n- Custom loss functions significantly improve task-specific performance",
+      "content_sha256": "b5bfe07e112f922fe1f73fd58338c0dd0417a01b18dc2c203b449cfc8f6b2008",
+      "sections": [
+        {
+          "type": "heading",
+          "title": "Model Training Session - 2025-11-06",
+          "level": 1,
+          "content": "# Model Training Session - 2025-11-06",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 1
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Overview",
+          "level": 2,
+          "content": "## Overview",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Training Configuration",
+          "level": 2,
+          "content": "## Training Configuration",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Performance Metrics",
+          "level": 2,
+          "content": "## Performance Metrics",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Initial Performance",
+          "level": 3,
+          "content": "### Initial Performance",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Final Performance",
+          "level": 3,
+          "content": "### Final Performance",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Training Issues Encountered",
+          "level": 2,
+          "content": "## Training Issues Encountered",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Memory Optimization",
+          "level": 3,
+          "content": "### Memory Optimization",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Data Quality Issues",
+          "level": 3,
+          "content": "### Data Quality Issues",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Code Changes Made",
+          "level": 2,
+          "content": "## Code Changes Made",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Model Architecture Updates",
+          "level": 3,
+          "content": "### Model Architecture Updates",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Training Loop Improvements",
+          "level": 3,
+          "content": "### Training Loop Improvements",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 3
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Results Analysis",
+          "level": 2,
+          "content": "## Results Analysis",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Next Steps",
+          "level": 2,
+          "content": "## Next Steps",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "heading",
+          "title": "Lessons Learned",
+          "level": 2,
+          "content": "## Lessons Learned",
+          "language": null,
+          "rows": 0,
+          "metadata": {
+            "level": 2
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "initial_metrics = {\n    \"accuracy\": 0.75,\n    \"f1_score\": 0.73,\n    \"bleu_score\": 0.68\n}",
+          "language": "python",
+          "rows": 0,
+          "metadata": {
+            "language": "python"
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "final_metrics = {\n    \"accuracy\": 0.89,\n    \"f1_score\": 0.87,\n    \"bleu_score\": 0.82\n}",
+          "language": "python",
+          "rows": 0,
+          "metadata": {
+            "language": "python"
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "class EnhancedCodeModel(nn.Module):\n    def __init__(self, vocab_size, d_model=512):\n        super().__init__()\n        self.transformer = nn.TransformerEncoder(\n            nn.TransformerEncoderLayer(d_model, nhead=8),\n            num_layers=6\n        )\n        self.code_specific_attention = CodeAttentionLayer(d_model)",
+          "language": "python",
+          "rows": 0,
+          "metadata": {
+            "language": "python"
+          }
+        },
+        {
+          "type": "code",
+          "title": null,
+          "level": null,
+          "content": "def enhanced_training_step(model, batch):\n    # Gradient clipping to prevent exploding gradients\n    torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)\n\n    # Learning rate scheduling\n    scheduler.step()\n\n    # Custom loss function for code tasks\n    loss = code_specific_loss(model_output, target)\n    return loss",
+          "language": "python",
+          "rows": 0,
+          "metadata": {
+            "language": "python"
+          }
+        },
+        {
+          "type": "table",
+          "title": null,
+          "level": null,
+          "content": "| Parameter | Value | Notes |\n|-----------|-------|-------|\n| Model | gpt-4 | Base model |\n| Epochs | 10 | Standard training |\n| Batch Size | 32 | Optimized for memory |\n| Learning Rate | 0.001 | Adam optimizer |\n| Dataset Size | 50,000 samples | Code generation tasks |\n\n",
+          "language": null,
+          "rows": 5,
+          "metadata": {
+            "headers": [
+              "Parameter",
+              "Value",
+              "Notes"
+            ],
+            "rows": [
+              {
+                "Parameter": "Model",
+                "Value": "gpt-4",
+                "Notes": "Base model"
+              },
+              {
+                "Parameter": "Epochs",
+                "Value": "10",
+                "Notes": "Standard training"
+              },
+              {
+                "Parameter": "Batch Size",
+                "Value": "32",
+                "Notes": "Optimized for memory"
+              },
+              {
+                "Parameter": "Learning Rate",
+                "Value": "0.001",
+                "Notes": "Adam optimizer"
+              },
+              {
+                "Parameter": "Dataset Size",
+                "Value": "50,000 samples",
+                "Notes": "Code generation tasks"
+              }
+            ],
+            "row_count": 5,
+            "column_count": 3
+          }
+        }
+      ],
+      "tables": [
+        {
+          "headers": [
+            "Parameter",
+            "Value",
+            "Notes"
+          ],
+          "rows": [
+            {
+              "Parameter": "Model",
+              "Value": "gpt-4",
+              "Notes": "Base model"
+            },
+            {
+              "Parameter": "Epochs",
+              "Value": "10",
+              "Notes": "Standard training"
+            },
+            {
+              "Parameter": "Batch Size",
+              "Value": "32",
+              "Notes": "Optimized for memory"
+            },
+            {
+              "Parameter": "Learning Rate",
+              "Value": "0.001",
+              "Notes": "Adam optimizer"
+            },
+            {
+              "Parameter": "Dataset Size",
+              "Value": "50,000 samples",
+              "Notes": "Code generation tasks"
+            }
+          ],
+          "row_count": 5,
+          "column_count": 3
+        }
+      ],
+      "weight": 2.0,
+      "tags": [
+        "llm",
+        "performance",
+        "training",
+        "model",
+        "local"
+      ],
+      "frontmatter": {
+        "title": "Model Training Session - 2025-11-06",
+        "date": "2025-11-06",
+        "type": "training-log",
+        "tags": "[training, model, llm, performance]",
+        "weight": "2.0"
+      },
+      "created_at": "2025-11-06T17:05:13.426399",
+      "modified_at": "2025-11-06T17:05:13.425399",
+      "word_count": 318,
+      "char_count": 2538,
+      "is_private": false,
+      "source_type": "local",
+      "credibility_score": {
+        "overall_bullshit_score": 0.5,
+        "credibility_tier": "QUESTIONABLE",
+        "source_score": 0.4,
+        "quality_score": 0.5,
+        "consensus_score": 0.6,
+        "citation_score": 0.4,
+        "freshness_score": 0.0,
+        "confidence": 0.6
+      }
+    }
+  ],
+  "duplicates": [],
+  "skipped": [
+    [
+      "codex_root/vault/system-audit-guide.md",
+      "private_tagged"
+    ]
+  ]
+}

@@ -1,0 +1,1742 @@
+{
+  "updated_at": 1762507196.561133,
+  "updated_at_iso": "2025-11-07T09:19:56.561137",
+  "policy": {
+    "allow_paid_fallback": false,
+    "respect_provider_cooldowns": true,
+    "top_k": 8,
+    "min_success_rate": 0.7,
+    "max_p50_latency_ms": 5000,
+    "max_age_days": 14
+  },
+  "active": [
+    {
+      "id": "openrouter/polaris-alpha",
+      "success_rate": 1.0,
+      "p50_latency_ms": 1612,
+      "weight": 3.0
+    },
+    {
+      "id": "moonshotai/kimi-k2-thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500,
+      "weight": 2.6
+    },
+    {
+      "id": "amazon/nova-premier-v1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500,
+      "weight": 2.6
+    },
+    {
+      "id": "mistralai/voxtral-small-24b-2507",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500,
+      "weight": 2.6
+    },
+    {
+      "id": "openai/gpt-oss-safeguard-20b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500,
+      "weight": 2.6
+    },
+    {
+      "id": "nvidia/nemotron-nano-12b-v2-vl:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500,
+      "weight": 2.6
+    },
+    {
+      "id": "nvidia/nemotron-nano-12b-v2-vl",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500,
+      "weight": 2.6
+    },
+    {
+      "id": "minimax/minimax-m2:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500,
+      "weight": 2.6
+    }
+  ],
+  "considered": [
+    {
+      "id": "openrouter/polaris-alpha",
+      "success_rate": 1.0,
+      "p50_latency_ms": 1612
+    },
+    {
+      "id": "moonshotai/kimi-k2-thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "amazon/nova-premier-v1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/voxtral-small-24b-2507",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-oss-safeguard-20b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nvidia/nemotron-nano-12b-v2-vl:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nvidia/nemotron-nano-12b-v2-vl",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "minimax/minimax-m2:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "minimax/minimax-m2",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "liquid/lfm2-8b-a1b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "liquid/lfm-2.2-6b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "ibm-granite/granite-4.0-h-micro",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepcogito/cogito-v2-preview-llama-405b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-5-image-mini",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-haiku-4.5",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-vl-8b-thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-vl-8b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-5-image",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "inclusionai/ring-1t",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "inclusionai/ling-1t",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/o3-deep-research",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/o4-mini-deep-research",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nvidia/llama-3.3-nemotron-super-49b-v1.5",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "baidu/ernie-4.5-21b-a3b-thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.5-flash-image",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-vl-30b-a3b-thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-vl-30b-a3b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-5-pro",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "z-ai/glm-4.6",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "z-ai/glm-4.6:exacto",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-sonnet-4.5",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-v3.2-exp",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "thedrummer/cydonia-24b-v4.1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "relace/relace-apply-3",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.5-flash-preview-09-2025",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.5-flash-lite-preview-09-2025",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-vl-235b-a22b-thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-vl-235b-a22b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-max",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-coder-plus",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-5-codex",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-v3.1-terminus",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-v3.1-terminus:exacto",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "x-ai/grok-4-fast",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "alibaba/tongyi-deepresearch-30b-a3b:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "alibaba/tongyi-deepresearch-30b-a3b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-coder-flash",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "arcee-ai/afm-4.5b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "opengvlab/internvl3-78b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-next-80b-a3b-thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-next-80b-a3b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meituan/longcat-flash-chat:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meituan/longcat-flash-chat",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-plus-2025-07-28",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-plus-2025-07-28:thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nvidia/nemotron-nano-9b-v2:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nvidia/nemotron-nano-9b-v2",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "moonshotai/kimi-k2-0905",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "moonshotai/kimi-k2-0905:exacto",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepcogito/cogito-v2-preview-llama-70b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepcogito/cogito-v2-preview-llama-109b-moe",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepcogito/cogito-v2-preview-deepseek-671b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "stepfun-ai/step3",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-30b-a3b-thinking-2507",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "x-ai/grok-code-fast-1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nousresearch/hermes-4-70b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nousresearch/hermes-4-405b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.5-flash-image-preview",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-chat-v3.1:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-chat-v3.1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4o-audio-preview",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-medium-3.1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "baidu/ernie-4.5-21b-a3b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "baidu/ernie-4.5-vl-28b-a3b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "z-ai/glm-4.5v",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "ai21/jamba-mini-1.7",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "ai21/jamba-large-1.7",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-5-chat",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-5",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-5-mini",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-5-nano",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-oss-120b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-oss-120b:exacto",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-oss-20b:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-oss-20b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-opus-4.1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/codestral-2508",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-coder-30b-a3b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-30b-a3b-instruct-2507",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "z-ai/glm-4.5",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "z-ai/glm-4.5-air:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "z-ai/glm-4.5-air",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-235b-a22b-thinking-2507",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "z-ai/glm-4-32b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-coder:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-coder",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-coder:exacto",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "bytedance/ui-tars-1.5-7b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.5-flash-lite",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-235b-a22b-2507",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "switchpoint/router",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "moonshotai/kimi-k2:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "moonshotai/kimi-k2",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "thudm/glm-4.1v-9b-thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/devstral-medium",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/devstral-small",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "x-ai/grok-4",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-3n-e2b-it:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "tencent/hunyuan-a13b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "tngtech/deepseek-r1t2-chimera:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "tngtech/deepseek-r1t2-chimera",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "morph/morph-v3-large",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "morph/morph-v3-fast",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "baidu/ernie-4.5-vl-424b-a47b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "baidu/ernie-4.5-300b-a47b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "thedrummer/anubis-70b-v1.1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "inception/mercury",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-small-3.2-24b-instruct:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-small-3.2-24b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "minimax/minimax-m1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.5-flash-lite-preview-06-17",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.5-flash",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.5-pro",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "moonshotai/kimi-dev-72b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/o3-pro",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "x-ai/grok-3-mini",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "x-ai/grok-3",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/magistral-small-2506",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/magistral-medium-2506:thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/magistral-medium-2506",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.5-pro-preview",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-r1-0528-qwen3-8b:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-r1-0528-qwen3-8b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-r1-0528:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-r1-0528",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-opus-4",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-sonnet-4",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/devstral-small-2505",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-3n-e4b-it:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-3n-e4b-it",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/codex-mini",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.3-8b-instruct:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nousresearch/deephermes-3-mistral-24b-preview",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-medium-3",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.5-pro-preview-05-06",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "arcee-ai/spotlight",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "arcee-ai/maestro-reasoning",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "arcee-ai/virtuoso-large",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "arcee-ai/coder-large",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "microsoft/phi-4-reasoning-plus",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "inception/mercury-coder",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-4b:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-prover-v2",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-guard-4-12b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-30b-a3b:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-30b-a3b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-8b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-14b:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-14b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-235b-a22b:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen3-235b-a22b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "tngtech/deepseek-r1t-chimera:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "tngtech/deepseek-r1t-chimera",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "microsoft/mai-ds-r1:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "microsoft/mai-ds-r1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/o4-mini-high",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/o3",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/o4-mini",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen2.5-coder-7b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4.1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4.1-mini",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4.1-nano",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "eleutherai/llemma_7b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "alfredpros/codellama-7b-instruct-solidity",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "arliai/qwq-32b-arliai-rpr-v1:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "arliai/qwq-32b-arliai-rpr-v1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "agentica-org/deepcoder-14b-preview:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "agentica-org/deepcoder-14b-preview",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "x-ai/grok-3-mini-beta",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "x-ai/grok-3-beta",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-4-maverick:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-4-maverick",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-4-scout:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-4-scout",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen2.5-vl-32b-instruct:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen2.5-vl-32b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-chat-v3-0324:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-chat-v3-0324",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/o1-pro",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-small-3.1-24b-instruct:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-small-3.1-24b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "allenai/olmo-2-0325-32b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-3-4b-it:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-3-4b-it",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-3-12b-it:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-3-12b-it",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "cohere/command-a",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-3-27b-it:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-3-27b-it",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "thedrummer/skyfall-36b-v2",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "microsoft/phi-4-multimodal-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "perplexity/sonar-reasoning-pro",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "perplexity/sonar-pro",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "perplexity/sonar-deep-research",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwq-32b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.0-flash-lite-001",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-3.7-sonnet:thinking",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-3.7-sonnet",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-saba",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-guard-3-8b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/o3-mini-high",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.0-flash-001",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-vl-plus",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "aion-labs/aion-1.0",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "aion-labs/aion-1.0-mini",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "aion-labs/aion-rp-llama-3.1-8b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-vl-max",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-turbo",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen2.5-vl-72b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-plus",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-max",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/o3-mini",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-small-24b-instruct-2501:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-small-24b-instruct-2501",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-r1-distill-qwen-32b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-r1-distill-qwen-14b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-r1-distill-llama-70b:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-r1-distill-llama-70b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-r1:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-r1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "minimax/minimax-01",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/codestral-2501",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "microsoft/phi-4",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "sao10k/l3.1-70b-hanami-x1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "deepseek/deepseek-chat",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "sao10k/l3.3-euryale-70b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/o1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "cohere/command-r7b-12-2024",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemini-2.0-flash-exp:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.3-70b-instruct:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.3-70b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "amazon/nova-lite-v1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "amazon/nova-micro-v1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "amazon/nova-pro-v1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4o-2024-11-20",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-large-2411",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-large-2407",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/pixtral-large-2411",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-2.5-coder-32b-instruct:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-2.5-coder-32b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "raifle/sorcererlm-8x22b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "thedrummer/unslopnemo-12b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-3.5-haiku-20241022",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-3.5-haiku",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthracite-org/magnum-v4-72b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-3.5-sonnet",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/ministral-8b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/ministral-3b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-2.5-7b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nvidia/llama-3.1-nemotron-70b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "inflection/inflection-3-pi",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "inflection/inflection-3-productivity",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "thedrummer/rocinante-12b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.2-1b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.2-90b-vision-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.2-3b-instruct:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.2-3b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.2-11b-vision-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-2.5-72b-instruct:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-2.5-72b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "neversleep/llama-3.1-lumimaid-8b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/pixtral-12b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "cohere/command-r-plus-08-2024",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "cohere/command-r-08-2024",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "sao10k/l3.1-euryale-70b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "qwen/qwen-2.5-vl-7b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "microsoft/phi-3.5-mini-128k-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nousresearch/hermes-3-llama-3.1-70b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nousresearch/hermes-3-llama-3.1-405b:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nousresearch/hermes-3-llama-3.1-405b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/chatgpt-4o-latest",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "sao10k/l3-lunaris-8b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4o-2024-08-06",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.1-405b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.1-70b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.1-405b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3.1-8b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-nemo:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-nemo",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4o-mini-2024-07-18",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4o-mini",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-2-27b-it",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "google/gemma-2-9b-it",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-3.5-sonnet-20240620",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "sao10k/l3-euryale-70b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-7b-instruct-v0.3",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-7b-instruct:free",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-7b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "nousresearch/hermes-2-pro-llama-3-8b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "microsoft/phi-3-mini-128k-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "microsoft/phi-3-medium-128k-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4o-2024-05-13",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4o",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4o:extended",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-guard-2-8b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3-8b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "meta-llama/llama-3-70b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mixtral-8x22b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "microsoft/wizardlm-2-8x22b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4-turbo",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-3-haiku",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "anthropic/claude-3-opus",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-large",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4-turbo-preview",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-3.5-turbo-0613",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-small",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-tiny",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-7b-instruct-v0.2",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mixtral-8x7b-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "neversleep/noromaid-20b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "alpindale/goliath-120b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openrouter/auto",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4-1106-preview",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-3.5-turbo-instruct",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mistralai/mistral-7b-instruct-v0.1",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-3.5-turbo-16k",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "mancer/weaver",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "undi95/remm-slerp-l2-13b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "gryphe/mythomax-l2-13b",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4-0314",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-3.5-turbo",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    },
+    {
+      "id": "openai/gpt-4",
+      "success_rate": 0.8,
+      "p50_latency_ms": 2500
+    }
+  ],
+  "total_discovered": 340,
+  "total_filtered": 335,
+  "total_active": 8
+}

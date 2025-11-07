@@ -1,0 +1,17 @@
+{
+  "openrouter/polaris-alpha": {
+    "success": [
+      true,
+      true
+    ],
+    "latency_ms": [
+      1612,
+      2178
+    ],
+    "errors": [],
+    "ts": [
+      1762507107.803162,
+      1762507198.841293
+    ]
+  }
+}
