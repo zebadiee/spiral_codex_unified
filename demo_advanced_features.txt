@@ -1,0 +1,24 @@
+🌟 Spiral Codex Advanced Features Demo
+
+✅ Integrated Chat Systems:
+- spiral_conscious_chat.py (Full integration)
+- spiral_agentic.py (Multi-agent coordination)
+- spiral_chat.py (Basic chat)
+
+✅ Advanced Capabilities:
+- File operations (read/write/list)
+- Safe code execution
+- Multi-agent coordination
+- Consciousness and learning
+- Service integration (Reasoning Hub, Neural Bus, OMAi)
+
+✅ Available Tools:
+- read_file: Read file contents
+- write_file: Create/edit files
+- execute_bash: Run commands safely
+- list_directory: Browse directories
+- create_project: Scaffold projects
+- run_tests: Execute test suites
+- git_status, git_commit: Version control
+
+🚀 This is the next generation of AI assistance!

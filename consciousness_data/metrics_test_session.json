@@ -1,0 +1,15 @@
+{
+  "session_id": "test_session",
+  "total_interactions": 5,
+  "successful_tasks": 5,
+  "failed_tasks": 0,
+  "avg_response_time": 0.5,
+  "most_used_tools": {
+    "read_file": 3
+  },
+  "most_used_agents": {
+    "\u0192CODEX": 5
+  },
+  "user_satisfaction_score": 0.0,
+  "system_health_score": 1.0
+}

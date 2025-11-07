@@ -1,0 +1,81 @@
+{
+  "timestamp": "2025-11-07T16:34:15.705927",
+  "total_tests": 12,
+  "passed_tests": 6,
+  "failed_tests": 6,
+  "total_duration": 2.9878594875335693,
+  "test_results": [
+    {
+      "name": "Service Health Check",
+      "passed": true,
+      "message": "",
+      "duration": 0.008740901947021484
+    },
+    {
+      "name": "Reasoning Hub Integration",
+      "passed": false,
+      "message": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "duration": 0.0015387535095214844
+    },
+    {
+      "name": "Neural Bus Communication",
+      "passed": false,
+      "message": "False",
+      "duration": 0.0014810562133789062
+    },
+    {
+      "name": "OMAi RAG Search",
+      "passed": false,
+      "message": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "duration": 0.0016007423400878906
+    },
+    {
+      "name": "Conscious Chat Import",
+      "passed": true,
+      "message": "",
+      "duration": 0.0037202835083007812
+    },
+    {
+      "name": "Agentic Orchestrator Import",
+      "passed": true,
+      "message": "",
+      "duration": 0.0034177303314208984
+    },
+    {
+      "name": "Consciousness System Import",
+      "passed": true,
+      "message": "",
+      "duration": 0.0054988861083984375
+    },
+    {
+      "name": "File Operations",
+      "passed": false,
+      "message": "Written content mismatch",
+      "duration": 0.00017404556274414062
+    },
+    {
+      "name": "Safe Code Execution",
+      "passed": true,
+      "message": "",
+      "duration": 0.002607107162475586
+    },
+    {
+      "name": "OpenRouter API Access",
+      "passed": true,
+      "message": "",
+      "duration": 2.9441654682159424
+    },
+    {
+      "name": "Consciousness Performance",
+      "passed": false,
+      "message": "Consciousness system error: no running event loop",
+      "duration": 0.01370096206665039
+    },
+    {
+      "name": "Memory Usage",
+      "passed": false,
+      "message": "psutil not available for memory testing",
+      "duration": 0.0005133152008056641
+    }
+  ]
+}
