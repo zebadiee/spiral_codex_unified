@@ -7,7 +7,7 @@ import io
 import ipaddress
 import socket
 from typing import Any, Dict, Optional
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 
 import httpx
 from fastapi import APIRouter, File, HTTPException, UploadFile
@@ -36,54 +36,7 @@ _MAX_BYTES = 10 * 1024 * 1024  # 10 MB
 _MAX_REDIRECTS = 3
 
 
-async def _fetch_with_ssrf_protection(url: str) -> bytes:
-    """
-    Fetch an image from `url` with full SSRF protection:
-    - Each redirect hop is validated before being followed.
-    - Private/loopback/reserved IP ranges are blocked at every hop.
-    Returns the raw response body on success.
-    """
-    current_url = url
-    for hop in range(_MAX_REDIRECTS + 1):
-        _validate_url(current_url)
-        async with httpx.AsyncClient(follow_redirects=False, timeout=15.0) as client:
-            try:
-                response = await client.get(current_url)
-            except Exception as exc:
-                raise HTTPException(
-                    status_code=502, detail=f"Failed to fetch image URL: {exc}"
-                ) from exc
-
-        if response.is_redirect:
-            if hop == _MAX_REDIRECTS:
-                raise HTTPException(
-                    status_code=502,
-                    detail=f"Too many redirects fetching image URL (max {_MAX_REDIRECTS}).",
-                )
-            location = response.headers.get("location", "")
-            if not location:
-                raise HTTPException(
-                    status_code=502, detail="Redirect response missing Location header."
-                )
-            # Resolve relative redirects to absolute
-            if location.startswith("/"):
-                parsed = urlparse(current_url)
-                location = f"{parsed.scheme}://{parsed.netloc}{location}"
-            current_url = location
-        else:
-            try:
-                response.raise_for_status()
-            except httpx.HTTPStatusError as exc:
-                raise HTTPException(
-                    status_code=502,
-                    detail=f"Failed to fetch image URL (HTTP {exc.response.status_code}).",
-                ) from exc
-            return response.content
-
-    raise HTTPException(  # pragma: no cover
-        status_code=502,
-        detail=f"Too many redirects fetching image URL (max {_MAX_REDIRECTS}).",
-    )
+def _check_availability() -> None:
     if not _OCR_AVAILABLE:
         raise HTTPException(
             status_code=503,
@@ -91,8 +44,18 @@ async def _fetch_with_ssrf_protection(url: str) -> bytes:
         )
 
 
-def _validate_url(url: str) -> None:
-    """Reject URLs that resolve to private/internal network addresses (SSRF guard)."""
+def _validate_and_resolve_url(url: str) -> str:
+    """
+    Validate that a URL is safe to fetch (SSRF guard) and return a version of the
+    URL where the hostname is replaced with its resolved IP address.  Using the
+    resolved IP for the actual request prevents DNS-rebinding / TOCTOU attacks.
+
+    Raises HTTPException for:
+    - Non-http(s) schemes
+    - Missing hostname
+    - Unresolvable hostnames
+    - Private / loopback / link-local / reserved addresses
+    """
     parsed = urlparse(url)
     if parsed.scheme not in ("http", "https"):
         raise HTTPException(status_code=422, detail="Only http and https URLs are allowed.")
@@ -116,6 +79,67 @@ def _validate_url(url: str) -> None:
             status_code=422,
             detail="Requests to private or internal network addresses are not allowed.",
         )
+
+    # Reconstruct the URL using the resolved IP to prevent DNS rebinding.
+    # Preserve port if specified; wrap IPv6 in brackets.
+    port = parsed.port
+    ip_str = f"[{resolved_ip}]" if ":" in resolved_ip else resolved_ip
+    netloc = f"{ip_str}:{port}" if port else ip_str
+    safe_url = urlunparse((parsed.scheme, netloc, parsed.path, parsed.params, parsed.query, ""))
+    return safe_url
+
+
+async def _fetch_with_ssrf_protection(url: str) -> bytes:
+    """
+    Fetch an image with full SSRF protection.
+    Each redirect hop is validated and resolved before being followed.
+    Returns the raw response body on success.
+    """
+    current_url = url
+    for hop in range(_MAX_REDIRECTS + 1):
+        safe_url = _validate_and_resolve_url(current_url)
+        async with httpx.AsyncClient(
+            follow_redirects=False,
+            timeout=15.0,
+            headers={"Host": urlparse(current_url).hostname or ""},
+        ) as client:
+            try:
+                response = await client.get(safe_url)
+            except Exception as exc:
+                raise HTTPException(
+                    status_code=502, detail=f"Failed to fetch image URL: {exc}"
+                ) from exc
+
+        if response.is_redirect:
+            if hop == _MAX_REDIRECTS:
+                raise HTTPException(
+                    status_code=502,
+                    detail=f"Too many redirects fetching image URL (max {_MAX_REDIRECTS}).",
+                )
+            location = response.headers.get("location", "")
+            if not location:
+                raise HTTPException(
+                    status_code=502, detail="Redirect response missing Location header."
+                )
+            # Resolve relative redirects to absolute using the original (pre-resolved) URL.
+            if location.startswith("/"):
+                parsed = urlparse(current_url)
+                location = f"{parsed.scheme}://{parsed.netloc}{location}"
+            current_url = location
+        else:
+            try:
+                response.raise_for_status()
+            except httpx.HTTPStatusError as exc:
+                raise HTTPException(
+                    status_code=502,
+                    detail=f"Failed to fetch image URL (HTTP {exc.response.status_code}).",
+                ) from exc
+            return response.content
+
+    raise HTTPException(  # pragma: no cover
+        status_code=502,
+        detail=f"Too many redirects fetching image URL (max {_MAX_REDIRECTS}).",
+    )
 
 
 def _run_ocr(image_bytes: bytes, lang: Optional[str] = None) -> Dict[str, Any]:
@@ -249,14 +273,8 @@ async def extract_from_url(req: OCRUrlRequest) -> OCRResponse:
     """
     _check_availability()
 
-    url_str = str(req.url)
-    _validate_url(url_str)
+    image_bytes = await _fetch_with_ssrf_protection(str(req.url))
 
-    image_bytes = await _fetch_with_ssrf_protection(url_str)
-
-    # Validate content-type from a HEAD-less approach: open with Pillow and trust the bytes.
-    # We also perform a quick MIME check via the fetched Content-Type header by re-requesting.
-    # Instead, rely on Pillow to reject non-image data during _run_ocr.
     if len(image_bytes) > _MAX_BYTES:
         raise HTTPException(
             status_code=413,
@@ -264,4 +282,5 @@ async def extract_from_url(req: OCRUrlRequest) -> OCRResponse:
         )
 
     result = _run_ocr(image_bytes, lang=req.lang)
-    return OCRResponse(**result, source=url_str)
+    return OCRResponse(**result, source=str(req.url))
+
