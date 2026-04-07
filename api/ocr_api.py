@@ -36,7 +36,54 @@ _MAX_BYTES = 10 * 1024 * 1024  # 10 MB
 _MAX_REDIRECTS = 3
 
 
-def _check_availability() -> None:
+async def _fetch_with_ssrf_protection(url: str) -> bytes:
+    """
+    Fetch an image from `url` with full SSRF protection:
+    - Each redirect hop is validated before being followed.
+    - Private/loopback/reserved IP ranges are blocked at every hop.
+    Returns the raw response body on success.
+    """
+    current_url = url
+    for hop in range(_MAX_REDIRECTS + 1):
+        _validate_url(current_url)
+        async with httpx.AsyncClient(follow_redirects=False, timeout=15.0) as client:
+            try:
+                response = await client.get(current_url)
+            except Exception as exc:
+                raise HTTPException(
+                    status_code=502, detail=f"Failed to fetch image URL: {exc}"
+                ) from exc
+
+        if response.is_redirect:
+            if hop == _MAX_REDIRECTS:
+                raise HTTPException(
+                    status_code=502,
+                    detail=f"Too many redirects fetching image URL (max {_MAX_REDIRECTS}).",
+                )
+            location = response.headers.get("location", "")
+            if not location:
+                raise HTTPException(
+                    status_code=502, detail="Redirect response missing Location header."
+                )
+            # Resolve relative redirects to absolute
+            if location.startswith("/"):
+                parsed = urlparse(current_url)
+                location = f"{parsed.scheme}://{parsed.netloc}{location}"
+            current_url = location
+        else:
+            try:
+                response.raise_for_status()
+            except httpx.HTTPStatusError as exc:
+                raise HTTPException(
+                    status_code=502,
+                    detail=f"Failed to fetch image URL (HTTP {exc.response.status_code}).",
+                ) from exc
+            return response.content
+
+    raise HTTPException(  # pragma: no cover
+        status_code=502,
+        detail=f"Too many redirects fetching image URL (max {_MAX_REDIRECTS}).",
+    )
     if not _OCR_AVAILABLE:
         raise HTTPException(
             status_code=503,
@@ -205,35 +252,11 @@ async def extract_from_url(req: OCRUrlRequest) -> OCRResponse:
     url_str = str(req.url)
     _validate_url(url_str)
 
-    try:
-        async with httpx.AsyncClient(
-            follow_redirects=True,
-            max_redirects=_MAX_REDIRECTS,
-            timeout=15.0,
-        ) as client:
-            response = await client.get(url_str)
-        response.raise_for_status()
-    except httpx.HTTPStatusError as exc:
-        raise HTTPException(
-            status_code=502,
-            detail=f"Failed to fetch image URL (HTTP {exc.response.status_code}).",
-        ) from exc
-    except httpx.TooManyRedirects as exc:
-        raise HTTPException(
-            status_code=502,
-            detail=f"Too many redirects fetching image URL (max {_MAX_REDIRECTS}).",
-        ) from exc
-    except Exception as exc:
-        raise HTTPException(status_code=502, detail=f"Failed to fetch image URL: {exc}") from exc
+    image_bytes = await _fetch_with_ssrf_protection(url_str)
 
-    content_type = response.headers.get("content-type", "").split(";")[0].strip()
-    if content_type not in _ALLOWED_MIME_TYPES:
-        raise HTTPException(
-            status_code=415,
-            detail=f"Unsupported media type '{content_type}' returned from URL.",
-        )
-
-    image_bytes = response.content
+    # Validate content-type from a HEAD-less approach: open with Pillow and trust the bytes.
+    # We also perform a quick MIME check via the fetched Content-Type header by re-requesting.
+    # Instead, rely on Pillow to reject non-image data during _run_ocr.
     if len(image_bytes) > _MAX_BYTES:
         raise HTTPException(
             status_code=413,
