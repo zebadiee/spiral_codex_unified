@@ -4,8 +4,10 @@ Spiral Codex OCR API - Image text extraction via Tesseract
 Accepts uploaded image files or public image URLs and returns extracted text.
 """
 import io
-import os
+import ipaddress
+import socket
 from typing import Any, Dict, Optional
+from urllib.parse import urlparse
 
 import httpx
 from fastapi import APIRouter, File, HTTPException, UploadFile
@@ -31,6 +33,7 @@ _ALLOWED_MIME_TYPES = {
     "image/webp",
 }
 _MAX_BYTES = 10 * 1024 * 1024  # 10 MB
+_MAX_REDIRECTS = 3
 
 
 def _check_availability() -> None:
@@ -38,6 +41,33 @@ def _check_availability() -> None:
         raise HTTPException(
             status_code=503,
             detail="OCR dependencies (Pillow, pytesseract) are not installed.",
+        )
+
+
+def _validate_url(url: str) -> None:
+    """Reject URLs that resolve to private/internal network addresses (SSRF guard)."""
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https"):
+        raise HTTPException(status_code=422, detail="Only http and https URLs are allowed.")
+
+    hostname = parsed.hostname
+    if not hostname:
+        raise HTTPException(status_code=422, detail="Invalid URL: missing hostname.")
+
+    try:
+        resolved_ip = socket.getaddrinfo(hostname, None)[0][4][0]
+    except socket.gaierror as exc:
+        raise HTTPException(status_code=422, detail=f"Cannot resolve hostname: {exc}") from exc
+
+    try:
+        addr = ipaddress.ip_address(resolved_ip)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=f"Invalid IP address: {exc}") from exc
+
+    if addr.is_private or addr.is_loopback or addr.is_link_local or addr.is_reserved:
+        raise HTTPException(
+            status_code=422,
+            detail="Requests to private or internal network addresses are not allowed.",
         )
 
 
@@ -64,11 +94,11 @@ def _run_ocr(image_bytes: bytes, lang: Optional[str] = None) -> Dict[str, Any]:
         raise HTTPException(status_code=500, detail=f"OCR processing failed: {exc}") from exc
 
     # Collect word-level confidences (filter out empty words)
-    words = [
-        {"word": w, "confidence": int(c)}
-        for w, c in zip(data["text"], data["conf"])
-        if w.strip() and int(c) >= 0
-    ]
+    words = []
+    for w, c in zip(data["text"], data["conf"]):
+        confidence = int(c)
+        if w.strip() and confidence >= 0:
+            words.append({"word": w, "confidence": confidence})
 
     avg_confidence = (
         round(sum(w["confidence"] for w in words) / len(words), 2) if words else 0.0
@@ -115,12 +145,9 @@ def ocr_health() -> Dict[str, Any]:
     tesseract_version: Optional[str] = None
     if _OCR_AVAILABLE:
         try:
-            tesseract_version = pytesseract.get_tesseract_version().vstring  # type: ignore[attr-defined]
+            tesseract_version = str(pytesseract.get_tesseract_version())
         except Exception:
-            try:
-                tesseract_version = str(pytesseract.get_tesseract_version())
-            except Exception:
-                tesseract_version = "unknown"
+            tesseract_version = "unknown"
 
     return {
         "ok": _OCR_AVAILABLE,
@@ -170,20 +197,31 @@ async def extract_from_url(req: OCRUrlRequest) -> OCRResponse:
     """
     Extract text from a publicly accessible image URL using Tesseract OCR.
 
-    - **url**: Publicly reachable image URL.
+    - **url**: Publicly reachable image URL (private/internal addresses are blocked).
     - **lang**: Optional Tesseract language code (e.g. `eng`, `fra`).
     """
     _check_availability()
 
     url_str = str(req.url)
+    _validate_url(url_str)
+
     try:
-        async with httpx.AsyncClient(follow_redirects=True, timeout=15.0) as client:
+        async with httpx.AsyncClient(
+            follow_redirects=True,
+            max_redirects=_MAX_REDIRECTS,
+            timeout=15.0,
+        ) as client:
             response = await client.get(url_str)
         response.raise_for_status()
     except httpx.HTTPStatusError as exc:
         raise HTTPException(
             status_code=502,
             detail=f"Failed to fetch image URL (HTTP {exc.response.status_code}).",
+        ) from exc
+    except httpx.TooManyRedirects as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Too many redirects fetching image URL (max {_MAX_REDIRECTS}).",
         ) from exc
     except Exception as exc:
         raise HTTPException(status_code=502, detail=f"Failed to fetch image URL: {exc}") from exc
