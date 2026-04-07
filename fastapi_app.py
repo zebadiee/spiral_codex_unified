@@ -11,6 +11,7 @@ from api.brain_api import router as brain_router
 from api.omai_api import router as omai_router
 from api.converse_api import router as converse_router
 from api.token_admin import admin as token_admin_router
+from api.ocr_api import router as ocr_router
 
 app = FastAPI(
     title="Spiral Codex Unified",
@@ -66,7 +67,7 @@ def enhanced_health():
             "service": "spiral_codex_unified",
             "version": "2.0.0",
             "status": health_status,
-            "endpoints": ["/v1/brain", "/v1/omai", "/v1/converse", "/v2/reasoning"],
+            "endpoints": ["/v1/brain", "/v1/omai", "/v1/converse", "/v1/ocr", "/v2/reasoning"],
             "glyph": "⊚" if coherence_level >= 0.5 else "⌬",
             "consciousness_metrics": {
                 "sii_score": sii_score,
@@ -90,7 +91,7 @@ def enhanced_health():
             "service": "spiral_codex_unified",
             "version": "2.0.0",
             "status": "basic",
-            "endpoints": ["/v1/brain", "/v1/omai", "/v1/converse"],
+            "endpoints": ["/v1/brain", "/v1/omai", "/v1/converse", "/v1/ocr"],
             "glyph": "⊚",
             "error": f"Enhanced health check failed: {str(e)}",
             "timestamp": datetime.now(timezone.utc).isoformat()
@@ -124,6 +125,7 @@ app.include_router(brain_router)
 app.include_router(omai_router)
 app.include_router(converse_router)
 app.include_router(token_admin_router)
+app.include_router(ocr_router)
 
 # Mount reasoning hub API
 try:

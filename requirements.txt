@@ -5,3 +5,5 @@ aiohttp>=3.9.0
 requests>=2.31.0
 PyYAML>=6.0.1
 python-multipart>=0.0.6
+pytesseract>=0.3.13
+Pillow>=11.0.0
